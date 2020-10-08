@@ -1,0 +1,191 @@
+
+<!DOCTYPE html
+  PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<html><head>
+      <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+   <!--
+This HTML was auto-generated from MATLAB code.
+To make changes, update the MATLAB code and republish this document.
+      --><title>Run Micro-leads MUX to Switch Ripple Stimulation Channels</title><meta name="generator" content="MATLAB 9.8"><link rel="schema.DC" href="http://purl.org/dc/elements/1.1/"><meta name="DC.date" content="2020-08-03"><meta name="DC.source" content="run_me.m"><style type="text/css">
+html,body,div,span,applet,object,iframe,h1,h2,h3,h4,h5,h6,p,blockquote,pre,a,abbr,acronym,address,big,cite,code,del,dfn,em,font,img,ins,kbd,q,s,samp,small,strike,strong,sub,sup,tt,var,b,u,i,center,dl,dt,dd,ol,ul,li,fieldset,form,label,legend,table,caption,tbody,tfoot,thead,tr,th,td{margin:0;padding:0;border:0;outline:0;font-size:100%;vertical-align:baseline;background:transparent}body{line-height:1}ol,ul{list-style:none}blockquote,q{quotes:none}blockquote:before,blockquote:after,q:before,q:after{content:'';content:none}:focus{outine:0}ins{text-decoration:none}del{text-decoration:line-through}table{border-collapse:collapse;border-spacing:0}
+
+html { min-height:100%; margin-bottom:1px; }
+html body { height:100%; margin:0px; font-family:Arial, Helvetica, sans-serif; font-size:10px; color:#000; line-height:140%; background:#fff none; overflow-y:scroll; }
+html body td { vertical-align:top; text-align:left; }
+
+h1 { padding:0px; margin:0px 0px 25px; font-family:Arial, Helvetica, sans-serif; font-size:1.5em; color:#d55000; line-height:100%; font-weight:normal; }
+h2 { padding:0px; margin:0px 0px 8px; font-family:Arial, Helvetica, sans-serif; font-size:1.2em; color:#000; font-weight:bold; line-height:140%; border-bottom:1px solid #d6d4d4; display:block; }
+h3 { padding:0px; margin:0px 0px 5px; font-family:Arial, Helvetica, sans-serif; font-size:1.1em; color:#000; font-weight:bold; line-height:140%; }
+
+a { color:#005fce; text-decoration:none; }
+a:hover { color:#005fce; text-decoration:underline; }
+a:visited { color:#004aa0; text-decoration:none; }
+
+p { padding:0px; margin:0px 0px 20px; }
+img { padding:0px; margin:0px 0px 20px; border:none; }
+p img, pre img, tt img, li img, h1 img, h2 img { margin-bottom:0px; }
+
+ul { padding:0px; margin:0px 0px 20px 23px; list-style:square; }
+ul li { padding:0px; margin:0px 0px 7px 0px; }
+ul li ul { padding:5px 0px 0px; margin:0px 0px 7px 23px; }
+ul li ol li { list-style:decimal; }
+ol { padding:0px; margin:0px 0px 20px 0px; list-style:decimal; }
+ol li { padding:0px; margin:0px 0px 7px 23px; list-style-type:decimal; }
+ol li ol { padding:5px 0px 0px; margin:0px 0px 7px 0px; }
+ol li ol li { list-style-type:lower-alpha; }
+ol li ul { padding-top:7px; }
+ol li ul li { list-style:square; }
+
+.content { font-size:1.2em; line-height:140%; padding: 20px; }
+
+pre, code { font-size:12px; }
+tt { font-size: 1.2em; }
+pre { margin:0px 0px 20px; }
+pre.codeinput { padding:10px; border:1px solid #d3d3d3; background:#f7f7f7; }
+pre.codeoutput { padding:10px 11px; margin:0px 0px 20px; color:#4c4c4c; }
+pre.error { color:red; }
+
+@media print { pre.codeinput, pre.codeoutput { word-wrap:break-word; width:100%; } }
+
+span.keyword { color:#0000FF }
+span.comment { color:#228B22 }
+span.string { color:#A020F0 }
+span.untermstring { color:#B20000 }
+span.syscmd { color:#B28C00 }
+span.typesection { color:#A0522D }
+
+.footer { width:auto; padding:10px 0px; margin:25px 0px 0px; border-top:1px dotted #878787; font-size:0.8em; line-height:140%; font-style:italic; color:#878787; text-align:left; float:none; }
+.footer p { margin:0px; }
+.footer a { color:#878787; }
+.footer a:hover { color:#878787; text-decoration:underline; }
+.footer a:visited { color:#878787; }
+
+table th { padding:7px 5px; text-align:left; vertical-align:middle; border: 1px solid #d6d4d4; font-weight:bold; }
+table td { padding:7px 5px; text-align:left; vertical-align:top; border:1px solid #d6d4d4; }
+
+
+
+
+
+  </style></head><body><div class="content"><h1>Run Micro-leads MUX to Switch Ripple Stimulation Channels</h1><!--introduction--><p>You only need a few functions in this MATLAB software package to send commands to ML MUX controller box, which in turn controls Micro-leads MUX ASIC embedded in the active cat paddle.</p><p><img vspace="5" hspace="5" src="img/system_diagram.svg" alt=""> </p><p>The goal is to be able to "switch"  MUX ASIC so that Ripple stimulation currents can be routed to different electrodes in the active cat paddle for neural stimulation (see the system diagram above).</p><!--/introduction--><h2>Contents</h2><div><ul><li><a href="#1">Connect the Hardware</a></li><li><a href="#2">Open Serial Port</a></li><li><a href="#4">Initialize/Re-initalize MUX</a></li><li><a href="#6">Assign Stimulation Channels</a></li><li><a href="#8">Switch MUX</a></li></ul></div><h2 id="1">Connect the Hardware</h2><p>Connect all the hardware according to the diagram above. Plug in the USB cable <b>last</b>. Because there is no power on/off button, you can plug/unplug the USB cable to power/un-power the ML MUX controller box. The USB isolator is to isolate (or "float") the ML MUX controller box from the connected PC power supply "ground".</p><p>A BLUE LED lights up when ML MUX controller box is powered up and finishes its internal check-up sequence. This may take several seconds after USB plug-in.</p><p>In case you haven't plugged in the DB9 MUX control cable, there is no electrical connection to ML active cat paddle or the breakout MUX tester, RED LED will start flashing.</p><p>RED LED flashing indicates a missing communication link between ML MUX controller box and the MUX ASIC. To establish or re-establish this link, you need to follow the steps below.</p><h2 id="2">Open Serial Port</h2><p>1. Find the USB Serial Port number from your "System/Device Manager" (for example COM89 in the screen shot below)</p><p><img vspace="5" hspace="5" src="img/com_port.jpg" alt=""> </p><p>2. Open the serial port with <b>YOUR serial port number</b> (probably not COM89 in your case) and set baudrate = 9600; Now "ser" is the handle to that serial port that is used to communicate to the MUX controller box.</p><pre class="codeinput">ser = serial(<span class="string">"COM4"</span>, <span class="string">"BaudRate"</span>,9600)
+fopen(ser)
+</pre><h2 id="4">Initialize/Re-initalize MUX</h2><p>To power up MUX ASIC properly, run "start_mux" function with the serial port #.</p><p>The RED LED flashing should be extinguished after calling this function</p><pre class="codeinput">start_mux(ser)
+</pre><p>The communication link between the MUX controller box and the MUX ASIC is constantly monitored. Whenever the link is broken, run this function immediately to re-establish the link.</p><p>MUX ASIC will <b>NOT</b> function when RED LED is flashing.</p><p>If the USB cable is unplugged and re-plugged, the "serial" port needs to be re-opened as well.</p><h2 id="6">Assign Stimulation Channels</h2><p>You select the list of electrodes from the paddle (see paddle electrode sites mapping) to be stimulated, as the input to "mux_assign" function.</p><p><img vspace="5" hspace="5" src="img/electrode_sites.jpg" alt=""> </p><p>The output "e" should match your input, indicating the assignment completed successfully.</p><p>The output "s" are the corresponding Ripple stimulation channels to be turned on for stimulation (see Ripple connector pinout mapping)</p><p><img vspace="5" hspace="5" src="img/ripple_channels.jpg" alt=""> </p><p>The output "p" are the command bytes to be sent to MUX controller box</p><pre class="codeinput">[e,s,p] = mux_assign([1,8,0,9])
+</pre><p>In the example above, the selected electrode sites are list [1,8,0,9]. The corresponding Ripple channels are list [3, 1, 9, 15]. Note: the order of these two lists indicates one-to-one relationship</p><div><ul><li>Ripple_channel 3 <a href="==">==</a> Paddle_e_site 1</li><li>Ripple_channel 1 <a href="==">==</a> Paddle_e_site 8</li><li>Ripple_channel 9 <a href="==">==</a> Paddle_e_site 0</li><li>Ripple_channel 15 <a href="==">==</a> Paddle_e_site 9</li></ul></div><h2 id="8">Switch MUX</h2><p>Once the assignment completes successfully, you can perform the experiment by following the last two steps:</p><p>1. send the command "p" to ML MUX Controller box to activate the switching</p><pre class="codeinput">switch_mux(ser, p)
+</pre><p>2. send stimulation to the corresponding Ripple channels, as the list in "s"</p><pre class="codeinput">fprintf(<span class="string">"Ripple ch%d &lt;==&gt; E%d \n"</span>, [s;e])
+
+<span class="comment">% NOTE: &lt;&lt; add your Ripple commands to send stimulations on channels "s" &gt;&gt;</span>
+</pre><p class="footer"><br><a href="https://www.mathworks.com/products/matlab/">Published with MATLAB&reg; R2020a</a><br></p></div><!--
+##### SOURCE BEGIN #####
+%% Run Micro-leads MUX to Switch Ripple Stimulation Channels
+% You only need a few functions in this MATLAB software package to
+% send commands to ML MUX controller box, which in turn controls 
+% Micro-leads MUX ASIC embedded in the active cat paddle.
+%
+% <<img/system_diagram.svg>>
+% 
+% The goal is to be able to "switch"  MUX ASIC so that Ripple
+% stimulation currents can be routed to different electrodes in the
+% active cat paddle for neural stimulation (see the system diagram above).
+%
+%
+%% Connect the Hardware
+% Connect all the hardware according to the diagram above. Plug in the USB
+% cable *last*. Because there is no power on/off button, you can plug/unplug 
+% the USB cable to power/un-power the ML MUX controller box. The USB
+% isolator is to isolate (or "float") the ML MUX controller box from the connected PC
+% power supply "ground".
+% 
+% A BLUE LED lights up when ML MUX controller box is powered up
+% and finishes its internal check-up sequence. This may take several
+% seconds after USB plug-in. 
+%
+% In case you haven't plugged in the DB9 MUX control cable, there is no 
+% electrical connection to ML active cat paddle or the breakout MUX tester,
+% RED LED will start flashing.
+%
+% RED LED flashing indicates a missing communication link between ML MUX
+% controller box and the MUX ASIC. To establish or re-establish this link, you
+% need to follow the steps below.
+
+
+
+%% Open Serial Port
+% 1. Find the USB Serial Port number from your "System/Device Manager" (for example COM89 in the screen shot below)
+%
+% <<img/com_port.jpg>>
+% 
+
+
+%%
+% 2. Open the serial port with *YOUR serial port number* (probably not
+% COM89 in your case) and set baudrate = 9600; Now "ser" is the handle to
+% that serial port that is used to communicate to the MUX controller box. 
+
+ser = serial("COM4", "BaudRate",9600)
+fopen(ser)
+
+%% Initialize/Re-initalize MUX 
+% To power up MUX ASIC properly, run "start_mux" function with the serial
+% port #.
+%
+% The RED LED flashing should be extinguished after calling this function
+
+start_mux(ser) 
+
+%%
+% The communication link between the MUX controller box and the MUX ASIC is constantly
+% monitored. Whenever the link is broken, run this function immediately to re-establish the link.
+% 
+% MUX ASIC will *NOT* function when RED LED is flashing.
+%
+% If the USB cable is unplugged and re-plugged, the "serial" port needs to
+% be re-opened as well.
+
+
+%% Assign Stimulation Channels
+% You select the list of electrodes from the paddle (see paddle electrode
+% sites mapping) to be stimulated, as the input to "mux_assign" function.
+% 
+% <<img/electrode_sites.jpg>>
+%
+% The output "e" should match your input, indicating the assignment
+% completed successfully.
+% 
+% The output "s" are the corresponding Ripple stimulation channels to be
+% turned on for stimulation (see Ripple connector pinout mapping)
+%
+% <<img/ripple_channels.jpg>>
+%
+% The output "p" are the command bytes to be sent to MUX controller box
+
+[e,s,p] = mux_assign([1,8,0,9])
+
+
+%%
+% In the example above, the selected electrode sites are list [1,8,0,9]. 
+% The corresponding Ripple channels are list [3, 1, 9, 15].
+% Note: the order of these two lists indicates one-to-one relationship
+%
+% * Ripple_channel 3 <==> Paddle_e_site 1 
+% * Ripple_channel 1 <==> Paddle_e_site 8
+% * Ripple_channel 9 <==> Paddle_e_site 0
+% * Ripple_channel 15 <==> Paddle_e_site 9
+
+
+
+%% Switch MUX
+% Once the assignment completes successfully, you can perform the
+% experiment by following the last two steps:
+%
+% 1. send the command "p" to ML MUX Controller box to activate the switching
+%
+switch_mux(ser, p)
+
+%%
+% 2. send stimulation to the corresponding Ripple channels, as the list in "s"
+fprintf("Ripple ch%d <==> E%d \n", [s;e])
+
+% NOTE: << add your Ripple commands to send stimulations on channels "s" >>
+##### SOURCE END #####
+--></body></html>
