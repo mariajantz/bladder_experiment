@@ -4,7 +4,7 @@
 
 %% STARTUP: check fastsettle, connect to trellis, connect to MUX
 %import cat information
-C = experiment_constants_Neville;
+C = experiment_constants_Avocado;
 
 warning('Is fast-settle on?')
 keyboard
@@ -32,12 +32,21 @@ start_mux(ser)
 %set save folders
 yr = num2str(year(datetime(datestr(now))));
 rootpath = ['D:\DataTanks\' yr '\'];
+
+if ~exist([rootpath C.CAT_NAME], 'dir')
+    mkdir([rootpath C.CAT_NAME])
+    mkdir(fullfile(rootpath, catFolder.name, 'Grapevine'))
+end
 %rootpath = 'R:\data_raw\cat\' yr '\';
 %set save folders
 catFolder = dir([rootpath C.CAT_NAME '*']);
-savepath = fullfile(rootpath, catFolder.name, 'Documents\\Experiment_Files', C.LOCATION);
+%savepath = fullfile(rootpath, catFolder.name, 'Documents\\Experiment_Files', C.LOCATION);
+savepath = fullfile(rootpath, catFolder.name, 'Documents\\Experiment_Files', date, C.LOCATION);
 datapath = fullfile(rootpath, catFolder.name, 'Grapevine');
-baseline_filenum = find_curFile(datapath); 
+
+if ~exist(savepath)
+    mkdir(savepath)
+end
 
 %% Define cat variables
 
@@ -58,20 +67,33 @@ test_order = [18, 0, 23, 35; ...
     6, 31, 50, 10; ...
     27, 19, 34, 22]; 
 
-
-    
-%% Stimulation 
+% Stimulation 
 %for each channel set, switch MUX, check for success, build staggered train
 %then collect baseline data for those channels, then stim 
 %Basically, this runs 10 separate high-amplitude surveys back-to-back.
+C.MAX_AMP = 160; 
+baseline_filenum = find_curFile(datapath); 
 recTime = C.MAX_AMP_REPS/C.STIM_FREQUENCY(1)*size(test_order, 2)+1;
-full_sta = cell(size(test_order)); 
+full_sta = cell(size(channel_layout));
+ripple_chan = nan(size(test_order));
+baseline_nums = nan(size(test_order, 1), 1); 
+survey_nums = nan(size(test_order, 1), 1); 
+
+fwrite(ser, [2, 100, 0, 133])  % to disable MUX check
 
 for chan = 1:size(test_order, 1)
     %Switch MUX
     [e,s,p] = mux_assign(test_order(chan, :)); %doesn't run stim yet, just spits out electrode numbers - e: electrode site, s: ripple channel, p: command for switching
     switch_mux(ser, p)
     fprintf("Ripple ch%d <==> E%d \n", [s;e])
+    if length(s)== size(test_order, 2)
+        ripple_chan(chan, :) = s; 
+    else
+        fprintf('Chan to test were %d %d %d %d, Actual were %d %d %d\n. Label associated Ripple channels (s) and non-tested channels in test_order array will be set automatically.\n', ...
+            test_order(chan, :), e)
+        ripple_chan(chan, 1:3) = s;
+        
+    end
     
     %Update C to include only these 4 channels
     C.STIM_MAP = num2cell(s)';
@@ -82,7 +104,6 @@ for chan = 1:size(test_order, 1)
     else
         error('File number not incremented, stopping now to avoid overwriting previous file.');
     end
-
     
     %Collect baseline data for these trials
     baseline_wf = collect_baseline(C, recTime, sprintf('%s\\datafile%04d', datapath, baseline_filenum));
@@ -93,24 +114,80 @@ for chan = 1:size(test_order, 1)
     %Then stim on "s"
     elec_survey_stim(C, 0.2, sprintf('%s\\datafile', datapath))
     
+    fwrite(ser, [2, 30, 0, 133]) % To enable MUX check again
+    
     chanSnips = elec_survey_split(C, sprintf('%s\\datafile%04d', datapath, baseline_filenum));
     [stim_freqs, response_locs, ~] = find_response(C, chanSnips(C.SEARCH_CUFFS_IDX, :), baseline_wf); 
     stim_freqs = floor(1./(1./stim_freqs+.005));
     
-    %TODO remap the means of these snips onto the test_order array
+    % TODO now store all important info and move on to next set
+    %Mean snips need to go into channel layout array locations for plotting
+    mnSnips = cellfun(@mean,chanSnips, 'UniformOutput', 0); 
+    for i = 1:length(e)
+        [row, col] = find(channel_layout==e(i));
+        full_sta(row, col) = {cell2mat(mnSnips(:, i))}; 
+        
+    end
+    %save the baseline and survey file numbers
+    baseline_nums(chan) = baseline_filenum-1; 
+    survey_nums(chan) = baseline_filenum;
     
     baseline_filenum = baseline_filenum+1; 
-    % TODO now figure out how to store all important info and move on to next set
-    keyboard
+    pause(2); 
+    fwrite(ser, [2, 100, 0, 133])  % to disable MUX check
+    
 end
 
+test_order(isnan(ripple_chan)) = nan;
+fwrite(ser, [2, 30, 0, 133]) % To enable MUX check again
 
-%% Plotting
+% Plotting
 %layout according to the test_order layout
 
+figure;
+plotchan = 1:5; 
+channel_layout_rotate = channel_layout'; 
+full_sta_rotate = full_sta'; 
+%loop all channels
+for i = 1:numel(channel_layout)
+    if isempty(full_sta_rotate{i})
+        continue
+    end
+    subplot(size(channel_layout, 1), size(channel_layout, 2), i);
+    hold on
+    plot(full_sta_rotate{i}(plotchan, :)'); 
+    axis tight
+    title(sprintf('Channel %d',channel_layout_rotate(i))); 
+end
+
+set(gcf, 'Position', [1681 11 1920 963])
+legend(C.BIPOLAR.CUFF_LABELS)
+
+savefig(sprintf('%s\\survey%04d', savepath, baseline_filenum))
+save(sprintf('%s\\survey_vars%04d', savepath, baseline_filenum), 'baseline_nums', 'survey_nums', 'ripple_chan', 'full_sta', 'test_order', 'channel_layout')
 
 
 
+%% indiv channel tests
 
+test_chan = {18, 1, 5, 17, 37, 32, 8, 2, 6, 27, 28, 0, 4, 16, 26, 19, 9, 3, ...
+    7, 31, 39, 20, 23, 15, 51, 50, 34, 21, 24, 42, 40, 13, 46, 45, 10, 22, 25, 41};
+cathAmp = 100; 
+freq = 33;
+C.THRESH_REPS = 100; 
+
+for i = 1:length(test_chan)
+    [e,s,p] = mux_assign(test_chan{i});
+    fprintf("Ripple ch%d <==> E%d \n", [s;e])
+    
+    switch_mux(ser, p); 
+    %pause?
+    baseline_filenum = find_curFile(datapath); 
+    fpath = sprintf('%s\\datafile%04d', datapath, baseline_filenum); 
+    single_amp_stim(C, s, cathAmp, freq, fpath)
+    fprintf('Save info!!\n')
+    keyboard
+    
+end
 
 

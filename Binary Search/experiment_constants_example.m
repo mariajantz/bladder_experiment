@@ -13,6 +13,7 @@ C.STIM_HEADSTAGE      = 'nano2+stim';
 C.STIM_HEADSTAGE_LOC  = 'B1';           % Trellis value of stim headstage, options 'B1'/'B2'/'B3'
 C.HIGHAMP_HEADSTAGE_LOC = 'B2';         % if using two headstages to stimulate, include this - otherwise, leave as empty string ''
 C.REC_FS              = 30e3;           % recording at 30k Hz
+C.ANALOG_CHAN         = {'Bladder', 'LegX', 'LegY', 'LegZ'}; 
 
 % Switch channels to match location of the stimulation headstage
 chanOrder             = {1:32, 129:160, 161:192, 193:224, 129:224, 385:416}; 
@@ -142,4 +143,4 @@ C.BIPOLAR.CUFF_LABELS     = bipolar_cuff_mapping(:,2)';
 C.NCUFF_FILTER_ARGS = {2, 300, 'high'}; %Args are input to Butterworth, then applied with filtfilt
 
 end
->>>>>>> 53a68a980aecdc735750412cf639a90c9d5d0219
+
