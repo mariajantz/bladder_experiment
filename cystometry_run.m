@@ -4,12 +4,12 @@
 
 %EDIT THESE VARIABLES
 stim_on = true;
-C = experiment_constants_Neville;
+C = experiment_constants_Picaroons;
 
-stimChan = {[14 21]}; %cell array of stim channel rows
-amp = 250; %cell array of amplitudes of stim for each electrode
+stimChan = {[8 16]}; %cell array of stim channel rows
+amp = 300; %cell array of amplitudes of stim for each electrode
 freq = [3]; %array of frequencies of stim to test for each electrode
-stimTime = 120; %time in seconds, same for all stim (60s for 33Hz, 120s for 3Hz)
+stimTime = 60; %time in seconds, same for all stim (60s for 33Hz, 120s for 3Hz)
 max_fill = 20; %maximum fill volume
 fill_rate = 2; %mls per minute
 fill_start = 10; %seconds into recording that fill was started

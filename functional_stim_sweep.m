@@ -1,5 +1,5 @@
 
-C = experiment_constants_Neville;
+C = experiment_constants_Picaroons;
 yr = num2str(year(datetime(datestr(now))));
 savepath = sprintf('D:\\DataTanks\\%s\\%s\\Documents\\Experiment_Files\\', yr, C.CAT_NAME); %file path for saving constants/run info
 savepath = [savepath C.LOCATION '\'];
@@ -9,22 +9,16 @@ datapath = sprintf('D:\\DataTanks\\%s\\%s\\Grapevine', yr, C.CAT_NAME);
 %input channel vector, amp vector, freq vector, stimTime scalar
 %inter stimulus time (for several bursts of stim)
 
-plot_chan = [1 3]; %analog channels to plot
+plot_chan = [1]; %analog channels to plot
 
-%chans = cell2mat(C.STIM_MAP); %for fast sweep use this and have monopolar
-%chans([1:3 5:10 12 13 16:18 20 22 24], :) = []; if L6 has good function
-%uncomment and run line above, delete line below
-%chans([3:6 8:9 11:14 16:20 22:28], :) = [];
-%chans([6 8 14 16 18 22 24 27 28], :) = [];
-%chans = [1 2]; 
-chans = [9 10; 10 17; 17 18]; 
-%chans = [21 13]'; 
+chans = cell2mat(C.STIM_MAP); %for fast sweep use this
+chans = chans([1 2 11 12 16], :); 
 %survey set up in the experiment constants
 % chans = {1; 5; 10; 14}; %MUST BE VERTICAL 
 %chans = [4 11]; %make vertical array
 %chans = [19 20];
 %%chans = chans + C.ACTIVE_CHAN(1) - 1;
-all_amps = {[250]};%{[500]}; %get several amplitudes - sub threshold eng, emg, super, long latency {300,[100 200],300}
+all_amps = {[300]};%{[500]}; %get several amplitudes - sub threshold eng, emg, super, long latency {300,[100 200],300}
 %all_amps = {}
 freqs = [3 33]; %quick - 33
 interstim_time = 30; %in seconds, time between stim sequences applied within a single trial
@@ -33,7 +27,7 @@ stimTime_cmd = [60 20]; %length of time to stimulate [60 20] - quick 15
 pre_quiet = 60; %quiet recording before stim 60 - quick 10
 post_quiet = 60; %quiet recording after stim 60 - quick 10
 long_rec = 0; %length of longer quiet recordings
-bladder_fill_ml = 10; %amount of bladder fill at beginning
+bladder_fill_ml = 8; %amount of bladder fill at beginning
 
 total_est_time = (((pre_quiet+post_quiet+sum(stimTime_cmd))*repeats + (repeats-1)*interstim_time))*length(all_amps{1})*length(freqs)*size(chans, 1);
 
@@ -118,8 +112,8 @@ for c = 1:size(chans, 1)
                 %plot
                 h = figure('Position', [339 417 953 533]); hold on;
                 lwidth = [1.5, 1.5, 1.5, 1.5];
-                for c = fliplr(plot_chan)
-                    plot(1/30e3:1/30e3:length(cathWf(c, :))/30e3, cathWf(c, :), 'LineWidth', lwidth(c));
+                for lr = fliplr(plot_chan)
+                    plot(1/30e3:1/30e3:length(cathWf(lr, :))/30e3, cathWf(lr, :), 'LineWidth', lwidth(c));
                 end
                 xlabel('Time (s)');
                 ylabel('Pressure (mmHg)');

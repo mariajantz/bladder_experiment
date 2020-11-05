@@ -3,7 +3,7 @@
 % search.
 
 %TODO: update monopolar multi headstage stim splitting.
-C = experiment_constants_Neville;
+C = experiment_constants_Picaroons;
 
 warning('Is fast-settle on?')
 keyboard
@@ -93,7 +93,7 @@ end
 input('Press Enter to continue to binary search (or Ctrl+C to exit)')
 
 %run the binary search (or analyze the search based on existing files)
-binary_search(C, savepath, datapath, stim_freqs, response_locs, 'testing', ~stim_on, 'data_filenums', searchChan_files, 'loadpath', loadpath)
+%binary_search(C, savepath, datapath, stim_freqs, response_locs, 'testing', ~stim_on, 'data_filenums', searchChan_files, 'loadpath', loadpath)
 
 
 
