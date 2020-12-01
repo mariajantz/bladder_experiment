@@ -1,5 +1,5 @@
 
-C = experiment_constants_Picaroons;
+C = experiment_constants_Pettigrew;
 yr = num2str(year(datetime(datestr(now))));
 savepath = sprintf('D:\\DataTanks\\%s\\%s\\Documents\\Experiment_Files\\', yr, C.CAT_NAME); %file path for saving constants/run info
 savepath = [savepath C.LOCATION '\'];
@@ -11,23 +11,19 @@ datapath = sprintf('D:\\DataTanks\\%s\\%s\\Grapevine', yr, C.CAT_NAME);
 
 plot_chan = [1]; %analog channels to plot
 
-chans = cell2mat(C.STIM_MAP); %for fast sweep use this
-chans = chans([1 2 11 12 16], :); 
-%survey set up in the experiment constants
-% chans = {1; 5; 10; 14}; %MUST BE VERTICAL 
-%chans = [4 11]; %make vertical array
-%chans = [19 20];
-%%chans = chans + C.ACTIVE_CHAN(1) - 1;
-all_amps = {[300]};%{[500]}; %get several amplitudes - sub threshold eng, emg, super, long latency {300,[100 200],300}
+%chans = cell2mat(C.STIM_MAP); %for fast sweep use this
+chans = [2 9; 17 18; 18 25]; 
+%chans = [8 15]; 
+all_amps = {[250]};%{[500]}; %get several amplitudes - sub threshold eng, emg, super, long latency {300,[100 200],300}
 %all_amps = {}
-freqs = [3 33]; %quick - 33
+freqs = [3]; %quick - 33
 interstim_time = 30; %in seconds, time between stim sequences applied within a single trial
 repeats = 1;
-stimTime_cmd = [60 20]; %length of time to stimulate [60 20] - quick 15
-pre_quiet = 60; %quiet recording before stim 60 - quick 10
-post_quiet = 60; %quiet recording after stim 60 - quick 10
+stimTime_cmd = [120]; %length of time to stimulate [60 20] - quick 15
+pre_quiet = 120; %quiet recording before stim 60 - quick 10
+post_quiet = 120; %quiet recording after stim 60 - quick 10
 long_rec = 0; %length of longer quiet recordings
-bladder_fill_ml = 8; %amount of bladder fill at beginning
+bladder_fill_ml = 34; %amount of bladder fill at beginning
 
 total_est_time = (((pre_quiet+post_quiet+sum(stimTime_cmd))*repeats + (repeats-1)*interstim_time))*length(all_amps{1})*length(freqs)*size(chans, 1);
 
@@ -113,11 +109,11 @@ for c = 1:size(chans, 1)
                 h = figure('Position', [339 417 953 533]); hold on;
                 lwidth = [1.5, 1.5, 1.5, 1.5];
                 for lr = fliplr(plot_chan)
-                    plot(1/30e3:1/30e3:length(cathWf(lr, :))/30e3, cathWf(lr, :), 'LineWidth', lwidth(c));
+                    plot(1/30e3:1/30e3:length(cathWf(lr, :))/30e3, cathWf(lr, :), 'LineWidth', lwidth(lr));
                 end
                 xlabel('Time (s)');
                 ylabel('Pressure (mmHg)');
-                xlim([0 length(cathWf(c, :))/30e3]);
+                xlim([0 length(cathWf(lr, :))/30e3]);
                 ylim([0 60]);
                 title(sprintf('Stim chan: %s, Freq: %d, Amp: %d, File: %d', mat2str(last_stimChan), last_freq, last_amp, curFile-1));
                 %plot stimChan

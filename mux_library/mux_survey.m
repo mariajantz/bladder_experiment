@@ -187,6 +187,7 @@ for i = 1:length(test_chan)
     
     switch_mux(ser, p); 
     %pause?
+    %rename datapath
     baseline_filenum = find_curFile(datapath); 
     fpath = sprintf('%s\\datafile%04d', datapath, baseline_filenum); 
     single_amp_stim(C, s, cathAmp, freq, fpath)

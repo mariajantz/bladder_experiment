@@ -3,9 +3,10 @@
 % search.
 
 %TODO: update monopolar multi headstage stim splitting.
-C = experiment_constants_Picaroons;
+C = experiment_constants_Pettigrew;
 
 warning('Is fast-settle on?')
+
 keyboard
 
 % set up to trigger recording
