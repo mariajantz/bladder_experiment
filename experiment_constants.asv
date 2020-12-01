@@ -686,7 +686,7 @@ switch subName
             17:24];
         
     case 'Picaroons'
-        C.ROOT_PATH = 'R:\data_raw\cat\2020\Picaroons-20201029';
+        C.ROOT_PATH = 'R:\data_raw\cat\2020\Oland-20201029';
         C.EXPT_DATE = '10-29-20';
         C.REC_HEADSTAGE = 'surfs2';
         C.ELECTRODE_TYPE = 'MicroLeads Epidural 3x8'; %this was actually epidural,

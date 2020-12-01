@@ -6,8 +6,9 @@
 stim_on = true;
 C = experiment_constants_Pettigrew;
 
-stimChan = {[8 15]}; %cell array of stim channel rows
-amp = 250; %cell array of amplitudes of stim for each electrode
+
+stimChan = {[8 16]}; %cell array of stim channel rows
+amp = 300; %amplitudes of stim for each electrode
 freq = [3]; %array of frequencies of stim to test for each electrode
 stimTime = 120; %time in seconds, same for all stim (60s for 33Hz, 120s for 3Hz)
 max_fill = 35; %maximum fill volume
@@ -56,8 +57,14 @@ if stim_on
     
     %for stim: save file number, stimulation channel, stim frequency,
     %amplitude, time period, pulsewidth, polarity
-    save(fullfile(savepath, sprintf('cysStim%04d', curFile)), 'C', 'curFile', 'stimChan', ...
-        'amp', 'freq', 'stimTime', 'max_fill', 'fill_rate', 'fill_start', 'cmd');
+    if ~exist(fullfile(savepath, sprintf('cysStim%04d', curFile)), 'file')
+        save(fullfile(savepath, sprintf('cysStim%04d', curFile)), 'C', 'curFile', 'stimChan', ...
+            'amp', 'freq', 'stimTime', 'max_fill', 'fill_rate', 'fill_start', 'cmd');
+    else
+        warning('Saving second set of stim for this trial, if running additional stim pulses after this the save will overwrite.')
+        save(fullfile(savepath, sprintf('cysStim%04d_%02d', curFile, 2)), 'C', 'curFile', 'stimChan', ...
+            'amp', 'freq', 'stimTime', 'max_fill', 'fill_rate', 'fill_start', 'cmd');
+    end
     
     
 end

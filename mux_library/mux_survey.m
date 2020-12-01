@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 %MUX stimulator high amplitude surveys, monopolar only
 % Because the MUX has a standard layout and channels contradict each other,
 % this uses a hard-coded order of stimulus
@@ -195,5 +196,4 @@ for i = 1:length(test_chan)
     save(sprintf('%s\\trial_vars%04d', savepath, baseline_filenum), 'trial_chan', 'channel_layout', 'bladder_fill', 'C', 'stimTime', 'cathAmp', 'freq')
 
 end
-
 
