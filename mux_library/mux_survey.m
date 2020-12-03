@@ -1,4 +1,3 @@
-<<<<<<< HEAD
 %MUX stimulator high amplitude surveys, monopolar only
 % Because the MUX has a standard layout and channels contradict each other,
 % this uses a hard-coded order of stimulus
@@ -74,7 +73,7 @@ test_order = [18, 0, 23, 35; ...
 %for each channel set, switch MUX, check for success, build staggered train
 %then collect baseline data for those channels, then stim 
 %Basically, this runs 10 separate high-amplitude surveys back-to-back.
-C.MAX_AMP = 200; 
+C.MAX_AMP = 250; 
 baseline_filenum = find_curFile(datapath); 
 recTime = C.MAX_AMP_REPS/C.STIM_FREQUENCY(1)*size(test_order, 2)+1;
 full_sta = cell(size(channel_layout));
@@ -167,21 +166,24 @@ end
 set(gcf, 'Position', [1681 11 1920 963])
 legend(C.BIPOLAR.CUFF_LABELS)
 
-savefig(sprintf('%s\\survey%04d', savepath, baseline_filenum))
+savefig(sprintf('%s\\survey%04d_%duA', savepath, baseline_filenum, C.MAX_AMP))
 save(sprintf('%s\\survey_vars%04d', savepath, baseline_filenum), 'baseline_nums', 'survey_nums', 'ripple_chan', 'full_sta', 'test_order', 'channel_layout', 'bladder_fill')
 
 
 
 %% indiv channel tests
 
-test_chan = {13};
-cathAmp = 220; 
+test_chan = {39};
+cathAmp = 350; 
 freq = 33;
 stimTime = 20;
 C.THRESH_REPS = stimTime*freq;
+C.QUIET_REC = 5; 
+bladder_fill = '8 ml'; 
+datapath = fullfile(rootpath, catFolder.name, 'Grapevine');
 
 for i = 1:length(test_chan)
-        fwrite(ser, [2, 100, 0, 133])  % to disable MUX check
+    fwrite(ser, [2, 100, 0, 133])  % to disable MUX check
     trial_chan = test_chan{i}; 
     [e,s,p] = mux_assign(trial_chan);
     fprintf("Ripple ch%d <==> E%d \n", [s;e])
@@ -190,10 +192,16 @@ for i = 1:length(test_chan)
     %pause?
     %rename datapath
     baseline_filenum = find_curFile(datapath); 
-    fpath = sprintf('%s\\datafile%04d', datapath, baseline_filenum); 
+    %fpath = sprintf('%s\\datafile%04d', datapath, baseline_filenum); 
+    fpath = sprintf('%s\\datafile', datapath); 
     single_amp_stim(C, s, cathAmp, freq, fpath)
     fprintf('Save info!!\n')
     save(sprintf('%s\\trial_vars%04d', savepath, baseline_filenum), 'trial_chan', 'channel_layout', 'bladder_fill', 'C', 'stimTime', 'cathAmp', 'freq')
+    
+    fpath = sprintf('%s\\datafile%04d', datapath, baseline_filenum); 
+    h = plot_stim_trial(fpath, 1, trial_chan, freq, cathAmp)
+    savefig(fullfile(savepath, sprintf('fxnltest_%d', baseline_filenum-1)));
+    saveas(gcf, fullfile(savepath, sprintf('fxnltest_%d.png', baseline_filenum-1)));
 
 end
 
