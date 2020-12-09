@@ -1,5 +1,5 @@
 
-C = experiment_constants_Pettigrew;
+C = experiment_constants_Rumpus;
 yr = num2str(year(datetime(datestr(now))));
 savepath = sprintf('D:\\DataTanks\\%s\\%s\\Documents\\Experiment_Files\\', yr, C.CAT_NAME); %file path for saving constants/run info
 savepath = [savepath C.LOCATION '\'];
@@ -11,19 +11,20 @@ datapath = sprintf('D:\\DataTanks\\%s\\%s\\Grapevine', yr, C.CAT_NAME);
 
 plot_chan = [1]; %analog channels to plot
 
-%chans = cell2mat(C.STIM_MAP); %for fast sweep use this
-chans = [2 9; 17 18; 18 25]; 
+chans = cell2mat(C.STIM_MAP); %for fast sweep use this
+%chans = chans([1 5 8 10 11 12 16], :); 
 %chans = [8 15]; 
-all_amps = {[250]};%{[500]}; %get several amplitudes - sub threshold eng, emg, super, long latency {300,[100 200],300}
+all_amps = {[400]};%{[500]}; %get several amplitudes - sub threshold eng, emg, super, long latency {300,[100 200],300}
 %all_amps = {}
-freqs = [3]; %quick - 33
+freqs = [33]; %quick - 33
 interstim_time = 30; %in seconds, time between stim sequences applied within a single trial
 repeats = 1;
-stimTime_cmd = [120]; %length of time to stimulate [60 20] - quick 15
-pre_quiet = 120; %quiet recording before stim 60 - quick 10
-post_quiet = 120; %quiet recording after stim 60 - quick 10
+stimTime_cmd = [15]; %length of time to stimulate [60 20] - quick 15
+pre_quiet = 10; %quiet recording before stim 60 - quick 10
+post_quiet = 10; %quiet recording after stim 60 - quick 10
 long_rec = 0; %length of longer quiet recordings
-bladder_fill_ml = 34; %amount of bladder fill at beginning
+bladder_fill_ml = 8; %amount of bladder fill at beginning
+
 
 total_est_time = (((pre_quiet+post_quiet+sum(stimTime_cmd))*repeats + (repeats-1)*interstim_time))*length(all_amps{1})*length(freqs)*size(chans, 1);
 

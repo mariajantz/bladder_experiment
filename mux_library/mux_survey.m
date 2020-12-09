@@ -172,14 +172,16 @@ save(sprintf('%s\\survey_vars%04d', savepath, baseline_filenum), 'baseline_nums'
 
 
 %% indiv channel tests
-
-test_chan = {39};
-cathAmp = 350; 
+%Avocado: 9 at 170 is fine, 200 she doesn't like, chan 15 at 170 has strong
+%leg shakes and at 100 is uncomfortable, 115 is absolute max; chan 50 is fine at 100
+%but she's uncomfortable at 120. 
+test_chan = {50};
+cathAmp = 120; 
 freq = 33;
 stimTime = 20;
 C.THRESH_REPS = stimTime*freq;
 C.QUIET_REC = 5; 
-bladder_fill = '8 ml'; 
+bladder_fill = '8.5 ml'; 
 datapath = fullfile(rootpath, catFolder.name, 'Grapevine');
 
 for i = 1:length(test_chan)
@@ -200,8 +202,8 @@ for i = 1:length(test_chan)
     
     fpath = sprintf('%s\\datafile%04d', datapath, baseline_filenum); 
     h = plot_stim_trial(fpath, 1, trial_chan, freq, cathAmp)
-    savefig(fullfile(savepath, sprintf('fxnltest_%d', baseline_filenum-1)));
-    saveas(gcf, fullfile(savepath, sprintf('fxnltest_%d.png', baseline_filenum-1)));
+    savefig(fullfile(savepath, sprintf('fxnltest_%d', baseline_filenum)));
+    saveas(gcf, fullfile(savepath, sprintf('fxnltest_%d.png', baseline_filenum)));
 
 end
 

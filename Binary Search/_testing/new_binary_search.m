@@ -3,7 +3,7 @@
 % search.
 
 %TODO: update monopolar multi headstage stim splitting.
-C = experiment_constants_Pettigrew;
+C = experiment_constants_Rumpus;
 
 warning('Is fast-settle on?')
 
@@ -85,6 +85,9 @@ if ~exist(savepath, 'dir')
     mkdir(savepath);
     warning('Looks like this is a new location, have you taken photos?')
     keyboard;
+end
+if ~exist(datapath, 'dir')
+    mkdir(datapath); 
 end
 
 %% run the high amplitude survey (or analyze the survey based on existing
