@@ -4,25 +4,25 @@
 
 %EDIT THESE VARIABLES
 stim_on = true;
-C = experiment_constants_Neville;
+C = experiment_constants_Quirrell;
 
-stimChan = {[14 21]}; %cell array of stim channel rows
-amp = 250; %cell array of amplitudes of stim for each electrode
+stimChan = {[10 17]}; %cell array of stim channel rows
+amp = 350; %amplitudes of stim for each electrode
 freq = [3]; %array of frequencies of stim to test for each electrode
 stimTime = 120; %time in seconds, same for all stim (60s for 33Hz, 120s for 3Hz)
-max_fill = 20; %maximum fill volume
+max_fill = 20 ; %maximum fill volume
 fill_rate = 2; %mls per minute
 fill_start = 10; %seconds into recording that fill was started
-notes = 'Control cystometry no stim only measuring detrusor pressure'; 
+notes = 'Control cystometry Single Lumen'; 
 
-input('Is the volume fill info set correctly for this trial? Enter to continue ')
+input('Are the volume fill info and notes set correctly for this trial? Enter to continue ')
 
 %start trial - set up folders and then start recording on Trellis
 yr = num2str(year(datetime(datestr(now))));
 rootpath = ['D:\DataTanks\' yr '\'];
 catFolder = dir([rootpath C.CAT_NAME '*']);
-datapath = fullfile(rootpath, catFolder.name, 'Grapevine');
-savepath = fullfile(rootpath, catFolder.name, 'Documents\\Experiment_Files', C.LOCATION);
+%datapath = fullfile(rootpath, catFolder.name, 'Grapevine');
+%savepath = fullfile(rootpath, catFolder.name, 'Documents\\Experiment_Files', C.LOCATION);
 
 [curFile, ~] = find_curFile(datapath, 'testing', 0, 'datafiles', []);
 fpath = char(sprintf('%s\\datafile', datapath));
@@ -56,8 +56,14 @@ if stim_on
     
     %for stim: save file number, stimulation channel, stim frequency,
     %amplitude, time period, pulsewidth, polarity
-    save(fullfile(savepath, sprintf('cysStim%04d', curFile)), 'C', 'curFile', 'stimChan', ...
-        'amp', 'freq', 'stimTime', 'max_fill', 'fill_rate', 'fill_start', 'cmd');
+    if ~exist(fullfile(savepath, sprintf('cysStim%04d', curFile)), 'file')
+        save(fullfile(savepath, sprintf('cysStim%04d', curFile)), 'C', 'curFile', 'stimChan', ...
+            'amp', 'freq', 'stimTime', 'max_fill', 'fill_rate', 'fill_start', 'cmd');
+    else
+        warning('Saving second set of stim for this trial, if running additional stim pulses after this the save will overwrite.')
+        save(fullfile(savepath, sprintf('cysStim%04d_%02d', curFile, 2)), 'C', 'curFile', 'stimChan', ...
+            'amp', 'freq', 'stimTime', 'max_fill', 'fill_rate', 'fill_start', 'cmd');
+    end
     
     
 end

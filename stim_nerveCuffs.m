@@ -14,12 +14,13 @@ notes_update = input('Have you updated these notes to be accurate? y/n ', 's');
 if strcmp(notes_update, 'n')
     error('Update the notes')
 end
-notes = 'peripheral nerve stim, bladder fill 10/20 ml.';
 
-stimTime = 2; %seconds of stimulation
-freqs = [3 33]; %Hz each frequency is applied to all of the nerves
-amps = [100 250]; %uA of nerve cuff stimulation. Will run all of these amplitudes for each nerve
-nerverange = [1:2]; %Will run all of these nerves, one at a time
+notes = 'peripheral nerve stim, bladder fill close to full ~8ml.';
+
+stimTime = 10; %seconds of stimulation
+freqs = [33]; %Hz each frequency is applied to all of the nerves
+amps = [800]; %uA of nerve cuff stimulation. Will run all of these amplitudes for each nerve
+nerverange = [2]; %Will run all of these nerves, one at a time
 % 1 - Pelvic, 2 - Pudendal, 3 - Sensory, 4 - Caudal Rectal, 5 - Deep
 % Perineal, 6 - Sciatic
 
@@ -58,7 +59,7 @@ for i = nerverange
         %about what we did.
         save(sprintf('%snerve_cuff_stim%04d', savepath, filenums(1)), 'C', 'filenums', 'freq', 'freqs', 'stimTime', 'amps', 'stimulated_cuffs', 'nerverange', 'notes');
         %fprintf('Pausing to let stimulation return to baseline\n');
-        %pause(5); %to let the function return to baseline
+        pause(5); %to let the function return to baseline
         
     end
 end

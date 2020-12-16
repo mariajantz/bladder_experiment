@@ -6,6 +6,8 @@
 %import cat information
 C = experiment_constants_Avocado;
 
+uro_on = false;
+
 warning('Is fast-settle on?')
 keyboard
 
@@ -28,6 +30,34 @@ ser = serial("COM4", "BaudRate",9600)
 fopen(ser)
 
 start_mux(ser) 
+
+if uro_on
+% Serial Port for uromoca
+% fclose(instrfind);
+% delete(instrfind);
+s = serial('COM5','BaudRate',9600);
+
+
+% DAQ
+daq_ch_pressure = 0;
+daq_ch_volume = 1;
+ao_sr = 100; % DAQ output sampling rate Hz
+ao_scale = 10; %.1 V/unit = 10 = 1/10 (invert scale factor)
+d = daq.getDevices;
+if ~isempty(d)
+    dev = d.ID;
+    session = daq.createSession('ni');
+    addAnalogOutputChannel(session, dev, daq_ch_pressure, 'Voltage');% adds a channel
+    addAnalogOutputChannel(session, dev, daq_ch_volume, 'Voltage');% adds a channel
+    % send control signal to set voltage to 0, prior to switching to Current Mode
+    outputSingleScan(session,[0,0]);
+    session.IsContinuous = true;
+    session.Rate = ao_sr;
+else
+    obj = [];
+    error('DAQ device not found');
+end
+end
 
 %set save folders
 yr = num2str(year(datetime(datestr(now))));
@@ -67,17 +97,20 @@ test_order = [18, 0, 23, 35; ...
     6, 31, 50, 10; ...
     27, 19, 34, 22]; 
 
+%test_order = [5, 50, 42, 8; 4, 13, 20, 39; 3, 9, 24, 2]; 
+
 % Stimulation 
 %for each channel set, switch MUX, check for success, build staggered train
 %then collect baseline data for those channels, then stim 
 %Basically, this runs 10 separate high-amplitude surveys back-to-back.
-C.MAX_AMP = 160; 
+C.MAX_AMP = 200; %avo - start 200, beans - start 120
 baseline_filenum = find_curFile(datapath); 
 recTime = C.MAX_AMP_REPS/C.STIM_FREQUENCY(1)*size(test_order, 2)+1;
 full_sta = cell(size(channel_layout));
 ripple_chan = nan(size(test_order));
 baseline_nums = nan(size(test_order, 1), 1); 
 survey_nums = nan(size(test_order, 1), 1); 
+bladder_fill = '5 ml'; 
 
 fwrite(ser, [2, 100, 0, 133])  % to disable MUX check
 
@@ -92,7 +125,6 @@ for chan = 1:size(test_order, 1)
         fprintf('Chan to test were %d %d %d %d, Actual were %d %d %d\n. Label associated Ripple channels (s) and non-tested channels in test_order array will be set automatically.\n', ...
             test_order(chan, :), e)
         ripple_chan(chan, 1:3) = s;
-        
     end
     
     %Update C to include only these 4 channels
@@ -107,6 +139,7 @@ for chan = 1:size(test_order, 1)
     
     %Collect baseline data for these trials
     baseline_wf = collect_baseline(C, recTime, sprintf('%s\\datafile%04d', datapath, baseline_filenum));
+    %baseline_wf = collect_baseline_uromoca(C, recTime, sprintf('%s\\datafile%04d', datapath, baseline_filenum), s, session, ao_scale); 
     pause(1); 
     
     %TODO check indexing
@@ -135,6 +168,7 @@ for chan = 1:size(test_order, 1)
     baseline_filenum = baseline_filenum+1; 
     pause(2); 
     fwrite(ser, [2, 100, 0, 133])  % to disable MUX check
+    pause(1); 
     
 end
 
@@ -163,31 +197,44 @@ end
 set(gcf, 'Position', [1681 11 1920 963])
 legend(C.BIPOLAR.CUFF_LABELS)
 
-savefig(sprintf('%s\\survey%04d', savepath, baseline_filenum))
-save(sprintf('%s\\survey_vars%04d', savepath, baseline_filenum), 'baseline_nums', 'survey_nums', 'ripple_chan', 'full_sta', 'test_order', 'channel_layout')
+savefig(sprintf('%s\\survey%04d_%duA', savepath, baseline_filenum, C.MAX_AMP))
+save(sprintf('%s\\survey_vars%04d', savepath, baseline_filenum), 'baseline_nums', 'survey_nums', 'ripple_chan', 'full_sta', 'test_order', 'channel_layout', 'bladder_fill')
 
 
 
 %% indiv channel tests
-
-test_chan = {18, 1, 5, 17, 37, 32, 8, 2, 6, 27, 28, 0, 4, 16, 26, 19, 9, 3, ...
-    7, 31, 39, 20, 23, 15, 51, 50, 34, 21, 24, 42, 40, 13, 46, 45, 10, 22, 25, 41};
-cathAmp = 100; 
+%Avocado: 9 at 170 is fine, 200 she doesn't like, chan 15 at 170 has strong
+%leg shakes and at 100 is uncomfortable, 115 is absolute max; chan 50 is fine at 100
+%but she's uncomfortable at 120. 
+test_chan = {50};
+cathAmp = 120; 
 freq = 33;
-C.THRESH_REPS = 100; 
+stimTime = 20;
+C.THRESH_REPS = stimTime*freq;
+C.QUIET_REC = 5; 
+bladder_fill = '8.5 ml'; 
+datapath = fullfile(rootpath, catFolder.name, 'Grapevine');
 
 for i = 1:length(test_chan)
-    [e,s,p] = mux_assign(test_chan{i});
+    fwrite(ser, [2, 100, 0, 133])  % to disable MUX check
+    trial_chan = test_chan{i}; 
+    [e,s,p] = mux_assign(trial_chan);
     fprintf("Ripple ch%d <==> E%d \n", [s;e])
     
     switch_mux(ser, p); 
     %pause?
+    %rename datapath
     baseline_filenum = find_curFile(datapath); 
-    fpath = sprintf('%s\\datafile%04d', datapath, baseline_filenum); 
+    %fpath = sprintf('%s\\datafile%04d', datapath, baseline_filenum); 
+    fpath = sprintf('%s\\datafile', datapath); 
     single_amp_stim(C, s, cathAmp, freq, fpath)
     fprintf('Save info!!\n')
-    keyboard
+    save(sprintf('%s\\trial_vars%04d', savepath, baseline_filenum), 'trial_chan', 'channel_layout', 'bladder_fill', 'C', 'stimTime', 'cathAmp', 'freq')
     
-end
+    fpath = sprintf('%s\\datafile%04d', datapath, baseline_filenum); 
+    h = plot_stim_trial(fpath, 1, trial_chan, freq, cathAmp)
+    savefig(fullfile(savepath, sprintf('fxnltest_%d', baseline_filenum)));
+    saveas(gcf, fullfile(savepath, sprintf('fxnltest_%d.png', baseline_filenum)));
 
+end
 

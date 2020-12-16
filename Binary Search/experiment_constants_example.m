@@ -14,6 +14,7 @@ C.STIM_HEADSTAGE_LOC  = 'B1';           % Trellis value of stim headstage, optio
 C.HIGHAMP_HEADSTAGE_LOC = 'B2';         % if using two headstages to stimulate, include this - otherwise, leave as empty string ''
 C.REC_FS              = 30e3;           % recording at 30k Hz
 C.ANALOG_CHAN         = {'Bladder', 'LegX', 'LegY', 'LegZ'}; 
+C.TEST_TYPE           = 'Behaving'; % 'Behaving', 'Dex', 'Alpha Chloralose'
 
 % Switch channels to match location of the stimulation headstage
 chanOrder             = {1:32, 129:160, 161:192, 193:224, 129:224, 385:416}; 

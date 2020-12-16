@@ -27,7 +27,7 @@ C.LAYOUT_MAP          = ([1:8;9:16;17:24]);   %microleads
 % =========================================================================
 % STIMULATION PARAMETERS 
 % =========================================================================
-C.MAX_AMP             = 100;            % maximum amplitude stimulation on cathode in uA
+C.MAX_AMP             = 350;            % maximum amplitude stimulation on cathode in uA
 C.MAX_AMP_REPS        = 50;             % number of pulses applied in a high amplitude survey trial       
 C.THRESH_REPS         = 320;            % number of pulses applied in full data collection trials
 C.STIM_FREQUENCY      = [20 100];       % first (low) freq used for high amp survey to capture 
@@ -61,12 +61,14 @@ end
 % C.STIM_MAP = mat2cell([a+4 a a+8], ones(length(a), 1), [1 2]);
 
 %Microleads (24 channel arrays)
-% C.STIM_MAP = num2cell([1:24])';        %MONOPOLAR
+%C.STIM_MAP = num2cell([1:24])';        %MONOPOLAR
+%C.STIM_MAP([3 7 19 21]) = []; 
 %-------------------------------------------------------------------------------------------------------------
- C.STIM_MAP            = num2cell([[1:7 9:15 17:23]' [[1:7 9:15 17:23] + 1]']); %BIPOLAR HORIZONTAL
+% C.STIM_MAP            = num2cell([[1:7 9:15 17:23]' [[1:7 9:15 17:23] + 1]']); %BIPOLAR HORIZONTAL
 % C.STIM_MAP            = num2cell([[2:6 9:14 17:22]' [[2 4:6 9:14 17:22] + 2]']); % BIPOLAR _WIDE HORIZONTAL
 %-------------------------------------------------------------------------------------------------------------
-% C.STIM_MAP            = num2cell([[1:16]' [[1:16] + 8]']); %BIPOLAR VERTICAL
+C.STIM_MAP            = num2cell([[1:16]' [[1:16] + 8]']); %BIPOLAR VERTICAL
+%C.STIM_MAP([3 7], :) = [];
 %-------------------------------------------------------------------------------------------------------------
 %  C.STIM_MAP   = sortrows({9 [1 17]; 10 [2 18]; 11 [3 19]; 12 [4 20]; 13 [5 21]; 14 [6 22]; 15 [7 23]; 16 [8 24]},1);  %TRIPOLAR VERTICAL
 %-------------------------------------------------------------------------------------------------------------

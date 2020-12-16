@@ -4,7 +4,7 @@ function C = experiment_constants_Avocado
 % =========================================================================
 C.CAT_NAME            = 'Avocado';   % Animal name
 C.STIMULATOR_TYPE     = 'Grapevine';
-C.ARRAY_TYPE          = 'Microleads';       % Brand of array, ie 'MicroLeads', 'Ripple', 'Blackrock'
+C.ARRAY_TYPE          = 'MicroLeads';       % Brand of array, ie 'MicroLeads', 'Ripple', 'Blackrock'
 C.LOCATION            = 'Epidural - MUX';     % Options: 'DRG - S1', 'Epidural - L6', etc
 % C.ELECTRODE_DIM       = [4 4];          % 4x4, 4x8, etc - first dimension is electrodes 1, 2, 3...
 C.REC_HEADSTAGE       = 'surfs2_raw';   % surfs2_raw/surfs_raw/surfd_raw/nano2_raw/nano_raw
@@ -13,6 +13,8 @@ C.STIM_HEADSTAGE      = 'nano2+stim';
 C.STIM_HEADSTAGE_LOC  = 'B1';           % Trellis value of stim headstage, options 'B1'/'B2'/'B3'
 C.HIGHAMP_HEADSTAGE_LOC = '';         % if using two headstages to stimulate, include this - otherwise, leave as empty string ''
 C.REC_FS              = 30e3;           % recording at 30k Hz
+C.ANALOG_CHAN         = {'Bladder', '0', '0', '0', 'LegX', 'LegY', 'LegZ', 'InfusionPump', 'UrineScale'}; 
+C.TEST_TYPE           = 'Dex'; % 'Behaving', 'Dex'
 
 % Switch channels to match location of the stimulation headstage
 chanOrder             = {1:32, 129:160, 161:192, 193:224, 129:224, 385:416}; 
@@ -27,7 +29,7 @@ C.LAYOUT_MAP          = [18, 1, 5, 17, 37; 32, 8, 2, 6, 27; 28, 0, 4, 16, 26; ..
 % =========================================================================
 % STIMULATION PARAMETERS 
 % =========================================================================
-C.MAX_AMP             = 50;            % maximum amplitude stimulation on cathode in uA
+C.MAX_AMP             = 200;            % maximum amplitude stimulation on cathode in uA
 C.MAX_AMP_REPS        = 50;             % number of pulses applied in a high amplitude survey trial       
 C.THRESH_REPS         = 320;            % number of pulses applied in full data collection trials
 C.STIM_FREQUENCY      = [20 100];       % first (low) freq used for high amp survey to capture 

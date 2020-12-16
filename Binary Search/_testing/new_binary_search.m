@@ -3,9 +3,10 @@
 % search.
 
 %TODO: update monopolar multi headstage stim splitting.
-C = experiment_constants_Neville;
+C = experiment_constants_Quirrell;
 
 warning('Is fast-settle on?')
+
 keyboard
 
 % set up to trigger recording
@@ -85,6 +86,10 @@ if ~exist(savepath, 'dir')
     warning('Looks like this is a new location, have you taken photos?')
     keyboard;
 end
+if ~exist(datapath, 'dir')
+    mkdir(datapath); 
+    mkdir(fullfile(rootpath, catFolder.name, 'CystometryPlots')); 
+end
 
 %% run the high amplitude survey (or analyze the survey based on existing
 %files)
@@ -93,7 +98,7 @@ end
 input('Press Enter to continue to binary search (or Ctrl+C to exit)')
 
 %run the binary search (or analyze the search based on existing files)
-binary_search(C, savepath, datapath, stim_freqs, response_locs, 'testing', ~stim_on, 'data_filenums', searchChan_files, 'loadpath', loadpath)
+%binary_search(C, savepath, datapath, stim_freqs, response_locs, 'testing', ~stim_on, 'data_filenums', searchChan_files, 'loadpath', loadpath)
 
 
 
