@@ -6,6 +6,8 @@
 %import cat information
 C = experiment_constants_Avocado;
 
+uro_on = false;
+
 warning('Is fast-settle on?')
 keyboard
 
@@ -28,6 +30,34 @@ ser = serial("COM4", "BaudRate",9600)
 fopen(ser)
 
 start_mux(ser) 
+
+if uro_on
+% Serial Port for uromoca
+% fclose(instrfind);
+% delete(instrfind);
+s = serial('COM5','BaudRate',9600);
+
+
+% DAQ
+daq_ch_pressure = 0;
+daq_ch_volume = 1;
+ao_sr = 100; % DAQ output sampling rate Hz
+ao_scale = 10; %.1 V/unit = 10 = 1/10 (invert scale factor)
+d = daq.getDevices;
+if ~isempty(d)
+    dev = d.ID;
+    session = daq.createSession('ni');
+    addAnalogOutputChannel(session, dev, daq_ch_pressure, 'Voltage');% adds a channel
+    addAnalogOutputChannel(session, dev, daq_ch_volume, 'Voltage');% adds a channel
+    % send control signal to set voltage to 0, prior to switching to Current Mode
+    outputSingleScan(session,[0,0]);
+    session.IsContinuous = true;
+    session.Rate = ao_sr;
+else
+    obj = [];
+    error('DAQ device not found');
+end
+end
 
 %set save folders
 yr = num2str(year(datetime(datestr(now))));
@@ -73,7 +103,7 @@ test_order = [18, 0, 23, 35; ...
 %for each channel set, switch MUX, check for success, build staggered train
 %then collect baseline data for those channels, then stim 
 %Basically, this runs 10 separate high-amplitude surveys back-to-back.
-C.MAX_AMP = 250; 
+C.MAX_AMP = 200; %avo - start 200, beans - start 120
 baseline_filenum = find_curFile(datapath); 
 recTime = C.MAX_AMP_REPS/C.STIM_FREQUENCY(1)*size(test_order, 2)+1;
 full_sta = cell(size(channel_layout));
@@ -95,7 +125,6 @@ for chan = 1:size(test_order, 1)
         fprintf('Chan to test were %d %d %d %d, Actual were %d %d %d\n. Label associated Ripple channels (s) and non-tested channels in test_order array will be set automatically.\n', ...
             test_order(chan, :), e)
         ripple_chan(chan, 1:3) = s;
-        
     end
     
     %Update C to include only these 4 channels
@@ -110,6 +139,7 @@ for chan = 1:size(test_order, 1)
     
     %Collect baseline data for these trials
     baseline_wf = collect_baseline(C, recTime, sprintf('%s\\datafile%04d', datapath, baseline_filenum));
+    %baseline_wf = collect_baseline_uromoca(C, recTime, sprintf('%s\\datafile%04d', datapath, baseline_filenum), s, session, ao_scale); 
     pause(1); 
     
     %TODO check indexing
@@ -138,6 +168,7 @@ for chan = 1:size(test_order, 1)
     baseline_filenum = baseline_filenum+1; 
     pause(2); 
     fwrite(ser, [2, 100, 0, 133])  % to disable MUX check
+    pause(1); 
     
 end
 

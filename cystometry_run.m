@@ -4,25 +4,25 @@
 
 %EDIT THESE VARIABLES
 stim_on = true;
-C = experiment_constants_Rumpus;
+C = experiment_constants_Quirrell;
 
-stimChan = {[10 18]}; %cell array of stim channel rows
-amp = 600; %amplitudes of stim for each electrode
+stimChan = {[10 17]}; %cell array of stim channel rows
+amp = 350; %amplitudes of stim for each electrode
 freq = [3]; %array of frequencies of stim to test for each electrode
-stimTime = 2*60; %time in seconds, same for all stim (60s for 33Hz, 120s for 3Hz)
-max_fill = 8; %maximum fill volume
+stimTime = 120; %time in seconds, same for all stim (60s for 33Hz, 120s for 3Hz)
+max_fill = 20 ; %maximum fill volume
 fill_rate = 2; %mls per minute
 fill_start = 10; %seconds into recording that fill was started
-notes = 'Cystometry with long stimulation train.'; 
+notes = 'Control cystometry Single Lumen'; 
 
-input('Is the volume fill info set correctly for this trial? Enter to continue ')
+input('Are the volume fill info and notes set correctly for this trial? Enter to continue ')
 
 %start trial - set up folders and then start recording on Trellis
 yr = num2str(year(datetime(datestr(now))));
 rootpath = ['D:\DataTanks\' yr '\'];
 catFolder = dir([rootpath C.CAT_NAME '*']);
-datapath = fullfile(rootpath, catFolder.name, 'Grapevine');
-savepath = fullfile(rootpath, catFolder.name, 'Documents\\Experiment_Files', C.LOCATION);
+%datapath = fullfile(rootpath, catFolder.name, 'Grapevine');
+%savepath = fullfile(rootpath, catFolder.name, 'Documents\\Experiment_Files', C.LOCATION);
 
 [curFile, ~] = find_curFile(datapath, 'testing', 0, 'datafiles', []);
 fpath = char(sprintf('%s\\datafile', datapath));
