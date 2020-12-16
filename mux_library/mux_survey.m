@@ -4,7 +4,7 @@
 
 %% STARTUP: check fastsettle, connect to trellis, connect to MUX
 %import cat information
-C = experiment_constants_Avocado;
+C = experiment_constants_Beans;
 
 uro_on = false;
 
@@ -103,14 +103,14 @@ test_order = [18, 0, 23, 35; ...
 %for each channel set, switch MUX, check for success, build staggered train
 %then collect baseline data for those channels, then stim 
 %Basically, this runs 10 separate high-amplitude surveys back-to-back.
-C.MAX_AMP = 200; %avo - start 200, beans - start 120
+C.MAX_AMP = 150; %avo - start 200, beans - start 120
 baseline_filenum = find_curFile(datapath); 
 recTime = C.MAX_AMP_REPS/C.STIM_FREQUENCY(1)*size(test_order, 2)+1;
 full_sta = cell(size(channel_layout));
 ripple_chan = nan(size(test_order));
 baseline_nums = nan(size(test_order, 1), 1); 
 survey_nums = nan(size(test_order, 1), 1); 
-bladder_fill = '5 ml'; 
+bladder_fill = '1 ml'; 
 
 fwrite(ser, [2, 100, 0, 133])  % to disable MUX check
 
@@ -206,13 +206,13 @@ save(sprintf('%s\\survey_vars%04d', savepath, baseline_filenum), 'baseline_nums'
 %Avocado: 9 at 170 is fine, 200 she doesn't like, chan 15 at 170 has strong
 %leg shakes and at 100 is uncomfortable, 115 is absolute max; chan 50 is fine at 100
 %but she's uncomfortable at 120. 
-test_chan = {50};
-cathAmp = 120; 
+test_chan = {17};
+cathAmp = 230; 
 freq = 33;
 stimTime = 20;
 C.THRESH_REPS = stimTime*freq;
-C.QUIET_REC = 5; 
-bladder_fill = '8.5 ml'; 
+C.QUIET_REC = 10; 
+bladder_fill = '1 ml'; 
 datapath = fullfile(rootpath, catFolder.name, 'Grapevine');
 
 for i = 1:length(test_chan)

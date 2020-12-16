@@ -13,7 +13,7 @@ C.STIM_HEADSTAGE      = 'nano2+stim';
 C.STIM_HEADSTAGE_LOC  = 'B1';           % Trellis value of stim headstage, options 'B1'/'B2'/'B3'
 C.HIGHAMP_HEADSTAGE_LOC = '';         % if using two headstages to stimulate, include this - otherwise, leave as empty string ''
 C.REC_FS              = 30e3;           % recording at 30k Hz
-C.ANALOG_CHAN         = {'Bladder', '0', '0', '0', 'LegX', 'LegY', 'LegZ', 'InfusionPump'}; 
+C.ANALOG_CHAN         = {'Bladder', '0', '0', '0', 'LegX', 'LegY', 'LegZ', 'InfusionPump', 'UroMoca'}; 
 C.TEST_TYPE           = 'Dex'; % 'Behaving', 'Dex'
 
 % Switch channels to match location of the stimulation headstage

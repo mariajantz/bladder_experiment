@@ -3,17 +3,17 @@
 %starts recording itself, saves variables
 
 %EDIT THESE VARIABLES
-stim_on = true;
-C = experiment_constants_Quirrell;
+stim_on = false;
+C = experiment_constants_Beans;
 
 stimChan = {[10 17]}; %cell array of stim channel rows
 amp = 350; %amplitudes of stim for each electrode
 freq = [3]; %array of frequencies of stim to test for each electrode
 stimTime = 120; %time in seconds, same for all stim (60s for 33Hz, 120s for 3Hz)
-max_fill = 20 ; %maximum fill volume
-fill_rate = 2; %mls per minute
+max_fill = 2.5; %maximum fill volume
+fill_rate = 1; %mls per minute
 fill_start = 10; %seconds into recording that fill was started
-notes = 'Control cystometry Single Lumen'; 
+notes = 'Control cystometry three way'; 
 
 input('Are the volume fill info and notes set correctly for this trial? Enter to continue ')
 
