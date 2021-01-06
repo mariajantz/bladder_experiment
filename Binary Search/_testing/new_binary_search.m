@@ -3,7 +3,7 @@
 % search.
 
 %TODO: update monopolar multi headstage stim splitting.
-C = experiment_constants_Rumpus;
+C = experiment_constants_Quirrell;
 
 warning('Is fast-settle on?')
 
@@ -88,6 +88,7 @@ if ~exist(savepath, 'dir')
 end
 if ~exist(datapath, 'dir')
     mkdir(datapath); 
+    mkdir(fullfile(rootpath, catFolder.name, 'CystometryPlots')); 
 end
 
 %% run the high amplitude survey (or analyze the survey based on existing

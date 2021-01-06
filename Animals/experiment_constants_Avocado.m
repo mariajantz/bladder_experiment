@@ -4,7 +4,7 @@ function C = experiment_constants_Avocado
 % =========================================================================
 C.CAT_NAME            = 'Avocado';   % Animal name
 C.STIMULATOR_TYPE     = 'Grapevine';
-C.ARRAY_TYPE          = 'Microleads';       % Brand of array, ie 'MicroLeads', 'Ripple', 'Blackrock'
+C.ARRAY_TYPE          = 'MicroLeads';       % Brand of array, ie 'MicroLeads', 'Ripple', 'Blackrock'
 C.LOCATION            = 'Epidural - MUX';     % Options: 'DRG - S1', 'Epidural - L6', etc
 % C.ELECTRODE_DIM       = [4 4];          % 4x4, 4x8, etc - first dimension is electrodes 1, 2, 3...
 C.REC_HEADSTAGE       = 'surfs2_raw';   % surfs2_raw/surfs_raw/surfd_raw/nano2_raw/nano_raw
@@ -13,8 +13,8 @@ C.STIM_HEADSTAGE      = 'nano2+stim';
 C.STIM_HEADSTAGE_LOC  = 'B1';           % Trellis value of stim headstage, options 'B1'/'B2'/'B3'
 C.HIGHAMP_HEADSTAGE_LOC = '';         % if using two headstages to stimulate, include this - otherwise, leave as empty string ''
 C.REC_FS              = 30e3;           % recording at 30k Hz
-C.ANALOG_CHAN         = {'Bladder', '0', '0', '0', 'LegX', 'LegY', 'LegZ'}; 
-C.TEST_TYPE           = 'Behaving'; % 'Behaving', 'Dex'
+C.ANALOG_CHAN         = {'Bladder', '0', '0', '0', 'LegX', 'LegY', 'LegZ', 'InfusionPump', 'UrineScale'}; 
+C.TEST_TYPE           = 'Dex'; % 'Behaving', 'Dex'
 
 % Switch channels to match location of the stimulation headstage
 chanOrder             = {1:32, 129:160, 161:192, 193:224, 129:224, 385:416}; 
