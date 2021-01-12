@@ -2,13 +2,14 @@
 % Because the MUX has a standard layout and channels contradict each other,
 % this uses a hard-coded order of stimulus
 
-%% STARTUP: check fastsettle, connect to trellis, connect to MUX
+%% 1 STARTUP: check fastsettle, connect to trellis, connect to MUX
 %import cat information
 C = experiment_constants_Beans;
 
 uro_on = false;
 
 warning('Is fast-settle on?')
+
 keyboard
 
 %If in TCP mode, run this one time at the beginning of testing
@@ -78,7 +79,7 @@ if ~exist(savepath)
     mkdir(savepath)
 end
 
-%% Define cat variables
+%% 2 Define cat variables
 
 %layout in terms of MUX channel label
 channel_layout = [18, 1, 5, 17, 37; 32, 8, 2, 6, 27; 28, 0, 4, 16, 26; ...
@@ -103,14 +104,15 @@ test_order = [18, 0, 23, 35; ...
 %for each channel set, switch MUX, check for success, build staggered train
 %then collect baseline data for those channels, then stim 
 %Basically, this runs 10 separate high-amplitude surveys back-to-back.
-C.MAX_AMP = 150; %avo - start 200, beans - start 120
+C.MAX_AMP = 120; %avo - start 200, beans - start 120
+bladder_fill = '1 ml'; 
+
 baseline_filenum = find_curFile(datapath); 
 recTime = C.MAX_AMP_REPS/C.STIM_FREQUENCY(1)*size(test_order, 2)+1;
 full_sta = cell(size(channel_layout));
 ripple_chan = nan(size(test_order));
 baseline_nums = nan(size(test_order, 1), 1); 
 survey_nums = nan(size(test_order, 1), 1); 
-bladder_fill = '1 ml'; 
 
 fwrite(ser, [2, 100, 0, 133])  % to disable MUX check
 
@@ -207,12 +209,12 @@ save(sprintf('%s\\survey_vars%04d', savepath, baseline_filenum), 'baseline_nums'
 %leg shakes and at 100 is uncomfortable, 115 is absolute max; chan 50 is fine at 100
 %but she's uncomfortable at 120. 
 test_chan = {17};
-cathAmp = 230; 
-freq = 33;
-stimTime = 20;
+cathAmp = 120; 
+freq = 3;
+stimTime = 240;
 C.THRESH_REPS = stimTime*freq;
 C.QUIET_REC = 10; 
-bladder_fill = '1 ml'; 
+bladder_fill = 'Cystometry at 1 ml/min'; 
 datapath = fullfile(rootpath, catFolder.name, 'Grapevine');
 
 for i = 1:length(test_chan)

@@ -15,11 +15,11 @@ if strcmp(notes_update, 'n')
     error('Update the notes')
 end
 
-notes = 'peripheral nerve stim, bladder fill close to full ~8ml.';
+notes = 'pudendal nerve stim, bladder fill close to full ~6ml.';
 
 stimTime = 10; %seconds of stimulation
 freqs = [33]; %Hz each frequency is applied to all of the nerves
-amps = [800]; %uA of nerve cuff stimulation. Will run all of these amplitudes for each nerve
+amps = [200]; %uA of nerve cuff stimulation. Will run all of these amplitudes for each nerve
 nerverange = [2]; %Will run all of these nerves, one at a time
 % 1 - Pelvic, 2 - Pudendal, 3 - Sensory, 4 - Caudal Rectal, 5 - Deep
 % Perineal, 6 - Sciatic

@@ -3,17 +3,17 @@
 %starts recording itself, saves variables
 
 %EDIT THESE VARIABLES
-stim_on = false;
+stim_on = true;
 C = experiment_constants_Beans;
 
-stimChan = {[10 17]}; %cell array of stim channel rows
-amp = 350; %amplitudes of stim for each electrode
+stimChan = {[17]}; %cell array of stim channel rows
+amp = 120; %amplitudes of stim for each electrode
 freq = [3]; %array of frequencies of stim to test for each electrode
-stimTime = 120; %time in seconds, same for all stim (60s for 33Hz, 120s for 3Hz)
-max_fill = 2.5; %maximum fill volume
+stimTime = 240; %time in seconds, same for all stim (60s for 33Hz, 120s for 3Hz)
+max_fill = 10; %maximum fill volume
 fill_rate = 1; %mls per minute
 fill_start = 10; %seconds into recording that fill was started
-notes = 'Control cystometry three way'; 
+notes = 'Cystometry with 3 Hz stuimulation. Single lumen with 3-way connector. We dont have UroMoca recordings.'; 
 
 input('Are the volume fill info and notes set correctly for this trial? Enter to continue ')
 
@@ -21,15 +21,15 @@ input('Are the volume fill info and notes set correctly for this trial? Enter to
 yr = num2str(year(datetime(datestr(now))));
 rootpath = ['D:\DataTanks\' yr '\'];
 catFolder = dir([rootpath C.CAT_NAME '*']);
-%datapath = fullfile(rootpath, catFolder.name, 'Grapevine');
-%savepath = fullfile(rootpath, catFolder.name, 'Documents\\Experiment_Files', C.LOCATION);
+% datapath = fullfile(rootpath, catFolder.name, 'Grapevine');
+% savepath = fullfile(rootpath, catFolder.name, 'Documents\\Experiment_Files', C.LOCATION);
 
 [curFile, ~] = find_curFile(datapath, 'testing', 0, 'datafiles', []);
 fpath = char(sprintf('%s\\datafile', datapath));
 
 fprintf('Starting recording of cystometry trial NEVfile %d\n', curFile);
-% xippmex('trial', 'recording', fpath)
- xippmex('trial', 'recording', fpath, 0, 1, [], 148);
+% xippmex('trial', 'recording',fpath)
+xippmex('trial', 'recording', fpath, 0, 1, [], 148);
 recStart = tic;
 
 %save: C files, max volume, fill rate, file number
