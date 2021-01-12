@@ -636,6 +636,20 @@ switch subName
             };
         C.LAYOUT_MAP = flipud([26:2:32; 25:2:31; 18:2:24; 17:2:23; 10:2:16; 9:2:15; 2:2:8; 1:2:7]);
         
+    case 'Pettigrew'
+        C.ROOT_PATH = 'R:\data_raw\cat\2020\Pettigrew-20201117';
+        C.EXPT_DATE = '11-17-20';
+        C.REC_HEADSTAGE = 'surfs2';
+        C.ELECTRODE_TYPE = 'Ripple Epidural 4x8';
+        C.BIPOLAR_CUFF_MAPPING = { ...
+            [0 1] 'Glut EMG'
+            [2 3] 'Pelvic floor EMG'
+            [4 5] 'Rectal EMG'
+            };
+        
+        C.ANALOG_CHAN         = {'Bladder', 'LegX', 'LegY', 'LegZ'}; 
+        C.LAYOUT_MAP = flipud([26:2:32; 25:2:31; 18:2:24; 17:2:23; 10:2:16; 9:2:15; 2:2:8; 1:2:7]);
+        
     case 'HalfPint'
         C.ROOT_PATH = 'R:\data_raw\cat\2018\HalfPint-20181211';
         C.EXPT_DATE = '12-11-18';
@@ -711,6 +725,59 @@ switch subName
             9:16;
             17:24];
         C.ANALOG_CHAN         = {'Bladder', 'LegX', 'LegY', 'LegZ'}; 
+        
+    case 'QuidiVidi'
+        C.ROOT_PATH = 'R:\data_raw\cat\2020\QuidiVidi-20201110';
+        C.EXPT_DATE = '11-10-20';
+        C.REC_HEADSTAGE = 'surfs2';
+        C.ELECTRODE_TYPE = 'MicroLeads Epidural 3x8'; %this was actually epidural,
+        %but it's fine to use the predefined Utah layout
+        C.BIPOLAR_CUFF_MAPPING = { ...
+            [0 1] 'Pelv'
+            [2 3] 'Pudendal'
+            [6 7] 'Sens Branch'
+            [8 9] 'Deep Per'
+            [10 11] 'Caud Rect'
+            [12 13]  'Sci Prox'
+            [16 17] 'EUS EMG'
+            [18 19] 'Glut EMG'
+            [20 21] 'Pelvic floor EMG'
+            [22 23] 'Rectal EMG'
+            };
+        
+        C.TRIPOLAR_CUFF_MAPPING = {...
+            [14 15]  'Sciatic Distal'
+            };
+        C.LAYOUT_MAP = [1:8;
+            9:16;
+            17:24];
+        C.ANALOG_CHAN         = {'Bladder', 'LegX', 'LegY', 'LegZ'}; 
+        
+    case 'Rumpus'
+        C.ROOT_PATH = 'R:\data_raw\cat\2020\Rumpus-20201208';
+        C.EXPT_DATE = '12-08-20';
+        C.REC_HEADSTAGE = 'surfs2';
+        C.ELECTRODE_TYPE = 'MicroLeads Epidural 3x8'; 
+        C.BIPOLAR_CUFF_MAPPING = { ...
+            [0 1] 'Pelv'
+            [2 3] 'Pudendal'
+            [6 7] 'Sens Branch'
+            [8 9] 'Deep Per'
+            [10 11] 'Caud Rect'
+            [12 13]  'Sci Prox'
+            [16 17] 'EUS EMG'
+            [18 19] 'Glut EMG'
+            [20 21] 'Rectal EMG'
+            [22 23] 'Pelvic floor EMG'
+            };
+        
+        C.TRIPOLAR_CUFF_MAPPING = {...
+            [14 15]  'Sciatic Distal'
+            };
+        C.LAYOUT_MAP = [1:8;
+            9:16;
+            17:24];
+        C.ANALOG_CHAN         = {'Bladder', 'LegX', 'LegY', 'LegZ', 'InfusionPump', 'UrineScale'};
         
     case 'Indie'
         C.ROOT_PATH = 'R:\data_raw\cat\2019\Indie-20190129';
@@ -843,8 +910,7 @@ switch subName
         C.ROOT_PATH = 'R:\data_raw\cat\2019\Nelson-20190910';
         C.EXPT_DATE = '09-10-19';
         C.REC_HEADSTAGE = 'surfs2';
-        C.ELECTRODE_TYPE = 'MicroLeads Epidural 3x8'; %this was actually epidural,
-        %but it's fine to use the predefined Utah layout
+        C.ELECTRODE_TYPE = 'MicroLeads Epidural 3x8'; 
         C.BIPOLAR_CUFF_MAPPING = { ...
             [0 1] 'Pelv'
             [2 3] 'Pudendal'
