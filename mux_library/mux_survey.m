@@ -2,66 +2,11 @@
 % Because the MUX has a standard layout and channels contradict each other,
 % this uses a hard-coded order of stimulus
 
-%% 1 STARTUP: check fastsettle, connect to trellis, connect to MUX
+%% 1 STARTUP: check fastsettle, set save folders
 %import cat information
 C = experiment_constants_Beans;
-
-uro_on = false;
-
-warning('Is fast-settle on?')
-
-keyboard
-
-%If in TCP mode, run this one time at the beginning of testing
-% set up to trigger recording
-% status = xippmex('tcp');
-% if status == 0
-%     error('Xippmex is not connecting.')
-% end
-% 
-% oper = 148;
-% xippmex('addoper', oper);
-status = xippmex;
-if status == 0
-    error('Xippmex is not connecting.')
-end
-
-%MUX setup
-ser = serial("COM4", "BaudRate",9600)
-fopen(ser)
-
-start_mux(ser) 
-
-if uro_on
-% Serial Port for uromoca
-% fclose(instrfind);
-% delete(instrfind);
-s = serial('COM5','BaudRate',9600);
-
-
-% DAQ
-daq_ch_pressure = 0;
-daq_ch_volume = 1;
-ao_sr = 100; % DAQ output sampling rate Hz
-ao_scale = 10; %.1 V/unit = 10 = 1/10 (invert scale factor)
-d = daq.getDevices;
-if ~isempty(d)
-    dev = d.ID;
-    session = daq.createSession('ni');
-    addAnalogOutputChannel(session, dev, daq_ch_pressure, 'Voltage');% adds a channel
-    addAnalogOutputChannel(session, dev, daq_ch_volume, 'Voltage');% adds a channel
-    % send control signal to set voltage to 0, prior to switching to Current Mode
-    outputSingleScan(session,[0,0]);
-    session.IsContinuous = true;
-    session.Rate = ao_sr;
-else
-    obj = [];
-    error('DAQ device not found');
-end
-end
-
 %set save folders
-yr = num2str(year(datetime(datestr(now))));
+yr = C.SURGERY_DATE(1:4);% num2str(year(datetime(datestr(now))));
 rootpath = ['D:\DataTanks\' yr '\'];
 
 if ~exist([rootpath C.CAT_NAME], 'dir')
@@ -78,6 +23,36 @@ datapath = fullfile(rootpath, catFolder.name, 'Grapevine');
 if ~exist(savepath)
     mkdir(savepath)
 end
+
+status = xippmex;
+if status == 0
+    error('Xippmex is not connecting.')
+end
+
+%% connect to trellis, connect to MUX
+uro_on = false;
+
+warning('Is fast-settle on?')
+
+keyboard
+
+%If in TCP mode, run this one time at the beginning of testing
+% set up to trigger recording
+% status = xippmex('tcp');
+% if status == 0
+%     error('Xippmex is not connecting.')
+% end
+% 
+% oper = 148;
+% xippmex('addoper', oper);
+
+%MUX setup
+ser = serial("COM4", "BaudRate",9600)
+fopen(ser)
+
+start_mux(ser) 
+
+
 
 %% 2 Define cat variables
 
@@ -104,8 +79,8 @@ test_order = [18, 0, 23, 35; ...
 %for each channel set, switch MUX, check for success, build staggered train
 %then collect baseline data for those channels, then stim 
 %Basically, this runs 10 separate high-amplitude surveys back-to-back.
-C.MAX_AMP = 120; %avo - start 200, beans - start 120
-bladder_fill = '1 ml'; 
+C.MAX_AMP = 190; %avo - start 200, beans - start 120
+bladder_fill = '3.5 ml'; 
 
 baseline_filenum = find_curFile(datapath); 
 recTime = C.MAX_AMP_REPS/C.STIM_FREQUENCY(1)*size(test_order, 2)+1;
@@ -208,14 +183,14 @@ save(sprintf('%s\\survey_vars%04d', savepath, baseline_filenum), 'baseline_nums'
 %Avocado: 9 at 170 is fine, 200 she doesn't like, chan 15 at 170 has strong
 %leg shakes and at 100 is uncomfortable, 115 is absolute max; chan 50 is fine at 100
 %but she's uncomfortable at 120. 
-test_chan = {17};
-cathAmp = 120; 
-freq = 3;
-stimTime = 240;
+test_chan = {17, 37};
+cathAmp = 150; 
+freq = 33;
+stimTime = 20;
 C.THRESH_REPS = stimTime*freq;
-C.QUIET_REC = 10; 
-bladder_fill = 'Cystometry at 1 ml/min'; 
-datapath = fullfile(rootpath, catFolder.name, 'Grapevine');
+C.QUIET_REC = 20; 
+bladder_fill = '1.3 ml'; 
+%datapath = fullfile(rootpath, catFolder.name, 'Grapevine');
 
 for i = 1:length(test_chan)
     fwrite(ser, [2, 100, 0, 133])  % to disable MUX check
@@ -240,3 +215,4 @@ for i = 1:length(test_chan)
 
 end
 
+disp('Stim complete and data saved');

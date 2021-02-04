@@ -1,5 +1,5 @@
 
-C = experiment_constants_Quirrell;
+C = experiment_constants_Sleeman;
 yr = num2str(year(datetime(datestr(now))));
 savepath = sprintf('D:\\DataTanks\\%s\\%s\\Documents\\Experiment_Files\\', yr, C.CAT_NAME); %file path for saving constants/run info
 savepath = [savepath C.LOCATION '\'];
@@ -12,18 +12,18 @@ datapath = sprintf('D:\\DataTanks\\%s\\%s\\Grapevine', yr, C.CAT_NAME);
 plot_chan = [1]; %analog channels to plot
 
 chans = cell2mat(C.STIM_MAP); %n x 2 array - for fast sweep use this
-chans = chans([2 13 21],:); 
+chans = chans([3 6 7 10],:); 
 %chans = [2 9]; 
-all_amps = {[350]};%{[500]}; %get several amplitudes - sub threshold eng, emg, super, long latency {300,[100 200],300}
+all_amps = {[200]};%{[500]}; %get several amplitudes - sub threshold eng, emg, super, long latency {300,[100 200],300}
 %all_amps = {}
-freqs = [3 33]; %quick - 33, slow - [3 33]
+freqs = [3]; %quick - 33, slow - [3 33]
 interstim_time = 30; %ignore in seconds, time between stim sequences applied within a single trial
 repeats = 1; %ignore
-stimTime_cmd = [ 120 30]; %length of time to stimulate [60 20] - quick 15
-pre_quiet = 120; %quiet recording before stim 60 - quick 10
-post_quiet = 120; %quiet recording after stim 60 - quick 10
+stimTime_cmd = [60]; %length of time to stimulate [60 20] - quick 15
+pre_quiet = 60; %quiet recording before stim 60 - quick 10
+post_quiet = 60; %quiet recording after stim 60 - quick 10
 long_rec = 0; %length of longer quiet recordings
-bladder_fill_ml = 10; %amount of bladder fill at beginning
+bladder_fill_ml = 6; %amount of bladder fill at beginning
 
 
 total_est_time = (((pre_quiet+post_quiet+sum(stimTime_cmd))*repeats + (repeats-1)*interstim_time))*length(all_amps{1})*length(freqs)*size(chans, 1);

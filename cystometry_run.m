@@ -3,17 +3,17 @@
 %starts recording itself, saves variables
 
 %EDIT THESE VARIABLES
-stim_on = true;
+stim_on = false;
 C = experiment_constants_Beans;
 
-stimChan = {[17]}; %cell array of stim channel rows
-amp = 120; %amplitudes of stim for each electrode
+stimChan = {[5]}; %cell array of stim channel rows
+amp = 150; %amplitudes of stim for each electrode
 freq = [3]; %array of frequencies of stim to test for each electrode
-stimTime = 240; %time in seconds, same for all stim (60s for 33Hz, 120s for 3Hz)
-max_fill = 10; %maximum fill volume
+stimTime = 640; %time in seconds, same for all stim (60s for 33Hz, 120s for 3Hz)
+max_fill = 5; %maximum fill volume
 fill_rate = 1; %mls per minute
 fill_start = 10; %seconds into recording that fill was started
-notes = 'Cystometry with 3 Hz stuimulation. Single lumen with 3-way connector. We dont have UroMoca recordings.'; 
+notes =  'Control cystometry';
 
 input('Are the volume fill info and notes set correctly for this trial? Enter to continue ')
 

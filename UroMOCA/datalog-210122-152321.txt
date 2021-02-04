@@ -1,0 +1,13 @@
+Analog output scaling is 0.1 Volts/unit of measurement.
+[ 3:23:21.845 PM] NoLock
+[ 3:23:22.056 PM] NoLock
+[ 3:23:22.232 PM] NoLock
+[ 3:23:22.432 PM] NoLock
+[ 3:23:22.610 PM] NoLock
+[ 3:23:22.809 PM] NoLock
+[ 3:23:22.997 PM] NoLock
+[ 3:23:23.197 PM] NoLock
+[ 3:23:23.375 PM] NoLock
+[ 3:23:23.557 PM] NoLock
+[ 3:23:23.756 PM] NoLock
+[ 3:23:23.936 PM] NoLock
