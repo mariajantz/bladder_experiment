@@ -779,6 +779,32 @@ switch subName
             17:24];
         C.ANALOG_CHAN         = {'Bladder', 'LegX', 'LegY', 'LegZ', 'InfusionPump', 'UrineScale'};
         
+    case 'Sleeman'
+        C.ROOT_PATH = 'R:\data_raw\cat\2021\Sleeman-20210112';
+        C.EXPT_DATE = '12-08-20';
+        C.REC_HEADSTAGE = 'surfs2';
+        C.ELECTRODE_TYPE = 'MicroLeads Epidural 3x8'; 
+        C.BIPOLAR_CUFF_MAPPING = { ...
+            [0 1] 'Pelv'
+            [2 3] 'Pudendal'
+            [6 7] 'Sens Branch'
+            [8 9] 'Deep Per'
+            [10 11] 'Caud Rect'
+            [12 13]  'Sci Prox'
+            [16 17] 'EUS EMG'
+            [18 19] 'Glut EMG'
+            [20 21] 'Pelvic floor EMG'
+            [22 23] 'Rectal EMG'
+            };
+        
+        C.TRIPOLAR_CUFF_MAPPING = {...
+            [14 15]  'Sciatic Distal'
+            };
+        C.LAYOUT_MAP = [1:8;
+            9:16;
+            17:24];
+        C.ANALOG_CHAN         = {'Bladder', '0', '0', '0', 'LegX', 'LegY', 'LegZ', 'InfusionPump'}; 
+        
     case 'Indie'
         C.ROOT_PATH = 'R:\data_raw\cat\2019\Indie-20190129';
         C.EXPT_DATE = '01-29-19';
