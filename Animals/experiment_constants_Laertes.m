@@ -1,11 +1,12 @@
-function C = experiment_constants_Beans
+function C = experiment_constants_Laertes
 % =========================================================================
 % ANIMAL AND HEADSTAGE BACKGROUND
 % =========================================================================
-C.CAT_NAME            = 'Beans';   % Animal name
+C.CAT_NAME            = 'Laertes';   % Animal name
 C.STIMULATOR_TYPE     = 'Grapevine';
-C.ARRAY_TYPE          = 'MicroLeads';       % Brand of array, ie 'MicroLeads', 'Ripple', 'Blackrock'
-C.LOCATION            = 'Epidural - MUX';     % Options: 'DRG - S1', 'Epidural - L6', etc
+%C.ARRAY_TYPE          = 'Rootlet Cuffs, Peripheral nerve stim';       % Brand of array, ie 'MicroLeads', 'Ripple', 'Blackrock'
+ C.ARRAY_TYPE          = 'Rootlet Cuffs';
+C.LOCATION            = 'Rootlet - S1_S2_S3_L7_Ventral_rootlets';     % Options: 'DRG - S1', 'Epidural - L6', etc
 % C.ELECTRODE_DIM       = [4 4];          % 4x4, 4x8, etc - first dimension is electrodes 1, 2, 3...
 C.REC_HEADSTAGE       = 'surfs2_raw';   % surfs2_raw/surfs_raw/surfd_raw/nano2_raw/nano_raw
 C.REC_HEADSTAGE_LOC   = 'A';            % Trellis value of recording headstage, usually 'A'
@@ -13,9 +14,8 @@ C.STIM_HEADSTAGE      = 'nano2+stim';
 C.STIM_HEADSTAGE_LOC  = 'B1';           % Trellis value of stim headstage, options 'B1'/'B2'/'B3'
 C.HIGHAMP_HEADSTAGE_LOC = '';         % if using two headstages to stimulate, include this - otherwise, leave as empty string ''
 C.REC_FS              = 30e3;           % recording at 30k Hz
-C.ANALOG_CHAN         = {'Bladder', '0', '0', '0', '0', '0', '0', 'InfusionPump', '0', '0'}; 
-C.TEST_TYPE           = 'Behaving'; % 'Behaving', 'Dex'
-C.SURGERY_DATE        = '2020-12-10'; %YYYY-MM-DD
+C.ANALOG_CHAN         = {'Bladder'}; 
+C.TEST_TYPE           = 'Isoflurane'; % 'Behaving', 'Dex', 'Alpha Chloralose'
 
 % Switch channels to match location of the stimulation headstage
 chanOrder             = {1:32, 129:160, 161:192, 193:224, 129:224, 385:416}; 
@@ -23,14 +23,20 @@ stimLocation          = {'A', 'B1', 'B2', 'B3', 'B123', 'D'};
 C.ACTIVE_CHAN         = chanOrder{ismember(stimLocation, C.STIM_HEADSTAGE_LOC)};
 C.HIGHAMP_ACTIVE_CHAN = [chanOrder{ismember(stimLocation, C.HIGHAMP_HEADSTAGE_LOC)}]; %this is empty if the high amp headstage loc variable is empty
 
-C.LAYOUT_MAP          = [18, 1, 5, 17, 37; 32, 8, 2, 6, 27; 28, 0, 4, 16, 26; ...
-    19, 9, 3, 7, 31; 39, 20, 23, 15, 51; 50, 34, 21, 24, 42; ...
-    40, 11, 13, 35, 46; 45, 10, 22, 25, 41];
+% C.LAYOUT_MAP          = ([1:2:12; 2:2:12]);   %RITESH: change this value according to how many hooks/cuffs will be tested in each root
+ C.LAYOUT_MAP          = ([1:2:8; 2:2:8]);
+%C.LAYOUT_MAP          = ([1;2]);
+%EXAMPLE: 
+%If connecting 5 channels, all bipolar, where channels 1-2 are a pair, 3-4, and so on, use: [1:2:10; 2:2:10]
+%Then stimulate using this map:
+%  C.STIM_MAP            = num2cell([1:6; 7:12]'); % this sets up the pairs
+ C.STIM_MAP            = num2cell([1:4; 5:8]');
+%C.STIM_MAP            = num2cell([1;2]');
 
 % =========================================================================
 % STIMULATION PARAMETERS 
 % =========================================================================
-C.MAX_AMP             = 200;            % maximum amplitude stimulation on cathode in uA
+C.MAX_AMP             = 600;            % maximum amplitude stimulation on cathode in uA RITESH
 C.MAX_AMP_REPS        = 50;             % number of pulses applied in a high amplitude survey trial       
 C.THRESH_REPS         = 320;            % number of pulses applied in full data collection trials
 C.STIM_FREQUENCY      = [20 100];       % first (low) freq used for high amp survey to capture 
@@ -64,7 +70,7 @@ end
 % C.STIM_MAP = mat2cell([a+4 a a+8], ones(length(a), 1), [1 2]);
 
 %Microleads (24 channel arrays)
-C.STIM_MAP = num2cell([1:40])';        %MONOPOLAR
+% C.STIM_MAP = num2cell([1:24])';        %MONOPOLAR
 %-------------------------------------------------------------------------------------------------------------
 % C.STIM_MAP            = num2cell([[1:7 9:15 17:23]' [[1:7 9:15 17:23] + 1]']); %BIPOLAR HORIZONTAL
 % C.STIM_MAP            = num2cell([[2:6 9:14 17:22]' [[2 4:6 9:14 17:22] + 2]']); % BIPOLAR _WIDE HORIZONTAL
@@ -79,7 +85,7 @@ C.STIM_MAP = num2cell([1:40])';        %MONOPOLAR
 %person setup check)
 if any(~ismember(unique([C.STIM_MAP{:}]), C.LAYOUT_MAP))
     warning('Are you deliberately excluding channels from the stimulation map?');
-    %keyboard; 
+    keyboard; 
 end
 
 C.QUIET_REC           = 0.5;            % quiet recording duration before and after stim train, in seconds
@@ -88,13 +94,13 @@ if size(C.STIM_MAP, 2)>size(C.STIM_MAP, 1)
     warning('Stimulation map array had incorrect dimensions, attempting to auto-correct.'); 
     C.STIM_MAP = C.STIM_MAP'; 
 end
-% %remap stimulation to put contacts in the right place
-% C.STIM_MAP = remap_stim(C.LAYOUT_MAP, C.STIM_MAP); 
+%remap stimulation to put contacts in the right place
+C.STIM_MAP = remap_stim(C.LAYOUT_MAP, C.STIM_MAP); 
 % =========================================================================
 % ANALYSIS PARAMETERS 
 % =========================================================================
-C.AMP_MIN_DIFF = 10; % uA; this determines step size in binary search 
-C.AMP_MAX_DIFF = 100; 
+C.AMP_MIN_DIFF = 2; % uA; this determines step size in binary search RITESH - if you want finer selectivity steps change this value, it's uA between steps
+C.AMP_MAX_DIFF = 20; 
 C.PRE_WINDOW = 1; % ms; sets the amount of time prior to stimulation in window
 % C.SLIDING_WINDOW_DURATION  = 250e-6;
 % C.SLIDING_WINDOW_STEP      = 25e-6;
@@ -111,20 +117,21 @@ end
 % NERVE CUFF PARAMETERS
 % =========================================================================
 
-C.SEARCH_CUFFS_IDX = 1:5; 
+C.SEARCH_CUFFS_IDX = 1:7; 
 % channel maps for bipolar nerve cuffs: remember to zero-index them. 
 bipolar_cuff_mapping = { ...  
         [0 1] 'Pelv'
-        [4 5] 'Pudendal'
-        [8 9] 'EUS EMG'
-        [12 13] 'Abd EMG'
-        [16 17] 'Glut EMG'
+        [2 3] 'Pudendal'
+        [4 5] 'Combined'
+        [6 7] 'Deep Per'
+        [8 9] 'Sensory'
+        [10 11] 'Caudal Rectal'
+        [12 13] 'Sciatic Prox'
 };
 
 tripolar_cuff_mapping    = { ...
-%     [10 11]  'Sciatic Proximal' 
-       [12 13]  'Sciatic Distal' 
-    };
+      [15 16]  'Sciatic Distal' 
+};
 
 if strcmp(C.REC_HEADSTAGE, 'surfd_raw')
     if ( unique(cellfun(@(x) length(x), bipolar_cuff_mapping(:,1)))~=1 ...
@@ -145,3 +152,4 @@ C.BIPOLAR.CUFF_LABELS     = bipolar_cuff_mapping(:,2)';
 C.NCUFF_FILTER_ARGS = {2, 300, 'high'}; %Args are input to Butterworth, then applied with filtfilt
 
 end
+

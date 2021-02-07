@@ -1,0 +1,1 @@
+Analog output scaling is 0.1 Volts/unit of measurement.
