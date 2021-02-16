@@ -80,7 +80,7 @@ test_order = [18, 0, 23, 35; ...
 %then collect baseline data for those channels, then stim 
 %Basically, this runs 10 separate high-amplitude surveys back-to-back.
 C.MAX_AMP = 190; %avo - start 200, beans - start 120
-bladder_fill = '3.5 ml'; 
+bladder_fill = '2.5 ml'; 
 
 baseline_filenum = find_curFile(datapath); 
 recTime = C.MAX_AMP_REPS/C.STIM_FREQUENCY(1)*size(test_order, 2)+1;
@@ -183,13 +183,13 @@ save(sprintf('%s\\survey_vars%04d', savepath, baseline_filenum), 'baseline_nums'
 %Avocado: 9 at 170 is fine, 200 she doesn't like, chan 15 at 170 has strong
 %leg shakes and at 100 is uncomfortable, 115 is absolute max; chan 50 is fine at 100
 %but she's uncomfortable at 120. 
-test_chan = {17, 37};
-cathAmp = 150; 
+test_chan = {5, 17, 2, 1};
+cathAmp = 190; 
 freq = 33;
 stimTime = 20;
 C.THRESH_REPS = stimTime*freq;
 C.QUIET_REC = 20; 
-bladder_fill = '1.3 ml'; 
+bladder_fill = '2.9 ml'; 
 %datapath = fullfile(rootpath, catFolder.name, 'Grapevine');
 
 for i = 1:length(test_chan)
