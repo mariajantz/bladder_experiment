@@ -4,7 +4,7 @@
 
 %% 1 STARTUP: check fastsettle, set save folders
 %import cat information
-C = experiment_constants_Beans;
+C = experiment_constants_Cucumber;
 %set save folders
 yr = C.SURGERY_DATE(1:4);% num2str(year(datetime(datestr(now))));
 rootpath = ['D:\DataTanks\' yr '\'];

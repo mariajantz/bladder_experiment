@@ -1,6 +1,6 @@
 
 %ONLY CHANGE THESE PARAMETERS
-C = experiment_constants_Laertes;
+C = experiment_constants_Rubeus;
 yr = num2str(year(datetime(datestr(now))));
 
 savepath = sprintf('D:\\DataTanks\\%s\\%s\\Documents\\Experiment_Files\\', yr, C.CAT_NAME); %file path for saving constants/run info
@@ -15,12 +15,12 @@ if strcmp(notes_update, 'n')
     error('Update the notes')
 end
 
-notes = 'pelvic nerve stim, bladder fill close to full ~6ml.';
+notes = 'nerve stim, bladder fill half full ~12ml.';
 
 stimTime = 10; %seconds of stimulation
-freqs = [33]; %Hz each frequency is applied to all of the nerves
-amps = [20]; %uA of nerve cuff stimulation. Will run all of these amplitudes for each nerve
-nerverange = [2]; %Will run all of these nerves, one at a time
+freqs = [3 33]; %Hz each frequency is applied to all of the nerves
+amps = [100]; %uA of nerve cuff stimulation. Will run all of these amplitudes for each nerve
+nerverange = [3]; %Will run all of these nerves, one at a time
 % 1 - Pelvic, 2 - Pudendal, 3 - Sensory, 4 - Caudal Rectal, 5 - Deep
 % Perineal, 6 - Sciatic
 

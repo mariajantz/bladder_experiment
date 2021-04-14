@@ -3,17 +3,17 @@
 %starts recording itself, saves variables
 
 %EDIT THESE VARIABLES
-stim_on = false;
-C = experiment_constants_Beans;
+stim_on = true;
+C = experiment_constants_Rubeus;
 
-stimChan = {[5]}; %cell array of stim channel rows
-amp = 150; %amplitudes of stim for each electrode
-freq = [3]; %array of frequencies of stim to test for each electrode
-stimTime = 640; %time in seconds, same for all stim (60s for 33Hz, 120s for 3Hz)
-max_fill = 5; %maximum fill volume
-fill_rate = 1; %mls per minute
+stimChan = {[6 13]}; %cell array of stim channel rows
+amp = 500; %amplitudes of stim for each electrode
+freq = [33]; %array of frequencies of stim to test for each electrode
+stimTime = 60; %time in seconds, same for all stim (60s for 33Hz, 120s for 3Hz)
+max_fill = 25; %maximum fill volume
+fill_rate = 2; %mls per minute
 fill_start = 10; %seconds into recording that fill was started
-notes =  'Control cystometry';
+notes =  'Cystometry after SCI';
 
 input('Are the volume fill info and notes set correctly for this trial? Enter to continue ')
 
@@ -28,7 +28,7 @@ catFolder = dir([rootpath C.CAT_NAME '*']);
 fpath = char(sprintf('%s\\datafile', datapath));
 
 fprintf('Starting recording of cystometry trial NEVfile %d\n', curFile);
-% xippmex('trial', 'recording',fpath)
+%  xippmex('trial', 'recording',fpath)
 xippmex('trial', 'recording', fpath, 0, 1, [], 148);
 recStart = tic;
 
