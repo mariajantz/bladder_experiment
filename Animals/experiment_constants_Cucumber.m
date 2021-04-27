@@ -14,8 +14,9 @@ C.STIM_HEADSTAGE      = 'nano2+stim';
 C.STIM_HEADSTAGE_LOC  = 'B1';           % Trellis value of stim headstage, options 'B1'/'B2'/'B3'
 C.HIGHAMP_HEADSTAGE_LOC = '';         % if using two headstages to stimulate, include this - otherwise, leave as empty string ''
 C.REC_FS              = 30e3;           % recording at 30k Hz
-C.ANALOG_CHAN         = {'Bladder', '0', '0', '0', 'LegX', 'LegY', 'LegZ', 'InfusionPump'};  %'UrineScale'
-C.TEST_TYPE           = 'Dex'; % 'Behaving', 'Dex', 'Alpha Chloralose'
+%C.ANALOG_CHAN         = {'Bladder', '0', '0', '0', 'LegX', 'LegY', 'LegZ', 'InfusionPump', 'UrineScale'};  %'UrineScale'
+C.ANALOG_CHAN         = {'Bladder', '0', '0', '0', '0', '0', '0', 'InfusionPump', 'UrineScale'};
+C.TEST_TYPE           = 'Behaving'; % 'Behaving', 'Dex', 'Alpha Chloralose'
 
 % Switch channels to match location of the stimulation headstage
 chanOrder             = {1:32, 129:160, 161:192, 193:224, 129:224, 385:416}; 
@@ -83,10 +84,10 @@ end
 
 %Check if any channels are being excluded that shouldn't be (the tired
 %person setup check)
-if any(~ismember(unique([C.STIM_MAP{:}]), C.LAYOUT_MAP))
-    warning('Are you deliberately excluding channels from the stimulation map?');
-    keyboard; 
-end
+% if any(~ismember(unique([C.STIM_MAP{:}]), C.LAYOUT_MAP))
+%     warning('Are you deliberately excluding channels from the stimulation map?');
+%     keyboard; 
+% end
 
 C.QUIET_REC           = 0.5;            % quiet recording duration before and after stim train, in seconds
 % make sure stim array is vertical

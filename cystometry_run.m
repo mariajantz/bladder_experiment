@@ -3,17 +3,18 @@
 %starts recording itself, saves variables
 
 %EDIT THESE VARIABLES
-stim_on = true;
-C = experiment_constants_Rubeus;
+stim_on = false;
+stim_mux = true; 
+C = experiment_constants_Cucumber;
 
-stimChan = {[6 13]}; %cell array of stim channel rows
-amp = 500; %amplitudes of stim for each electrode
+stimChan = {[58]}; %cell array of stim channel rows
+amp = 150; %amplitudes of stim for each electrode
 freq = [33]; %array of frequencies of stim to test for each electrode
-stimTime = 60; %time in seconds, same for all stim (60s for 33Hz, 120s for 3Hz)
+stimTime = 30; %time in seconds, same for all stim (60s for 33Hz, 120s for 3Hz)
 max_fill = 25; %maximum fill volume
 fill_rate = 2; %mls per minute
 fill_start = 10; %seconds into recording that fill was started
-notes =  'Cystometry after SCI';
+notes =  'Control cystometry';
 
 input('Are the volume fill info and notes set correctly for this trial? Enter to continue ')
 
@@ -36,8 +37,41 @@ recStart = tic;
 save([savepath sprintf('\\cystometry%04d', curFile)], 'C', 'curFile', 'max_fill', 'fill_rate', 'fill_start', 'notes')
 
 %% stim
+if stim_mux
+    cmd = [];
+    %get command and run stimulation
+    %for each electrode included in that stim set
+    set_monitor(ser,true);
+    [mux_chan, ripple_chan, mux_cmd] = mux_assign(stimChan{1});
+    fprintf("Ripple ch%d <==> E%d \n", [ripple_chan;mux_chan])
+    switch_mux(ser, mux_cmd); 
+    
+    for i = 1:size(stimChan, 1)
+        C.THRESH_REPS = stimTime*freq;
+        %[cmd(i), ~] = single_amp_cathodal_stim(C, stimChan(i, :), amps(i), freqs(i)); %all cathodal stim
+        [cmd2, ~] = single_elec_stim_cmd(C, ripple_chan(i), amp, freq); %multichannel stim
+        cmd = [cmd cmd2];
+    end
+    
+    input('Press Enter to execute stimulation pulse ')
+    set_monitor(ser, false);
+    xippmex('stimseq', cmd);
+    fprintf('Stimulating for %.1f s\n', stimTime)
+    
+    %for stim: save file number, stimulation channel, stim frequency,
+    %amplitude, time period, pulsewidth, polarity
+    if ~exist(fullfile(savepath, sprintf('cysStim%04d.mat', curFile)), 'file')
+        save(fullfile(savepath, sprintf('cysStim%04d', curFile)), 'C', 'curFile', 'stimChan', ...
+            'ripple_chan', 'mux_chan', 'amp', 'freq', 'stimTime', 'max_fill', 'fill_rate', 'fill_start', 'cmd');
+    else
+        tempfile = dir(fullfile(savepath, sprintf('cysStim%04d*', curFile)));
+        warning('Saving additional set of stim for this trial, if running additional stim pulses after this the save will overwrite.')
+        save(fullfile(savepath, sprintf('cysStim%04d_%02d', curFile, length(tempfile))), 'C', 'curFile', 'stimChan', ...
+            'ripple_chan', 'mux_chan', 'amp', 'freq', 'stimTime', 'max_fill', 'fill_rate', 'fill_start', 'cmd');
+    end
+    
 
-if stim_on
+elseif stim_on
     cmd = [];
     %get command and run stimulation
     %for each electrode included in that stim set
@@ -56,7 +90,7 @@ if stim_on
     
     %for stim: save file number, stimulation channel, stim frequency,
     %amplitude, time period, pulsewidth, polarity
-    if ~exist(fullfile(savepath, sprintf('cysStim%04d', curFile)), 'file')
+    if ~exist(fullfile(savepath, sprintf('cysStim%04d.mat', curFile)), 'file')
         save(fullfile(savepath, sprintf('cysStim%04d', curFile)), 'C', 'curFile', 'stimChan', ...
             'amp', 'freq', 'stimTime', 'max_fill', 'fill_rate', 'fill_start', 'cmd');
     else
