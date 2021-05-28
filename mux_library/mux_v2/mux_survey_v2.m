@@ -195,13 +195,15 @@ save(sprintf('%s\\survey_vars%04d', savepath, baseline_filenum), 'baseline_nums'
 
 %test_chan = {7 45 56 32}; %remaining untested chans under dex
 channel_layout = C.LAYOUT_MAP; 
-test_chan = {[26 42], [26 35], [57 45], [57 44], [34 24], [40 56], [40 48], [58 36]};%35, 57, 40, 58, 34, 3, 26}; %potential good chan
-cathAmp = 210; 
+test_chan = {5, 26, 42, 44, 57};
+%test_chan = {5};%, 42, 44};
+%{[26 42], [26 35], [57 45], [57 44], [34 24], [40 56], [40 48], [58 36]};%35, 57, 40, 58, 34, 3, 26}; %potential good chan
+cathAmp = 240; 
 freq = 33;
-stimTime = 15;
+stimTime = 30;
 C.THRESH_REPS = stimTime*freq;
-C.QUIET_REC = 10; 
-bladder_fill = 'medium full, about 12 ml'; 
+C.QUIET_REC = 30; 
+bladder_fill = 'medium full, about 7 ml'; 
 %datapath = fullfile(rootpath, catFolder.name, 'Grapevine');
 
 for i = 1:length(test_chan)
@@ -232,6 +234,7 @@ for i = 1:length(test_chan)
     h = plot_stim_trial(fpath, 1, trial_chan, freq, cathAmp)
     savefig(fullfile(savepath, sprintf('fxnltest_%d', baseline_filenum)));
     saveas(gcf, fullfile(savepath, sprintf('fxnltest_%d.png', baseline_filenum)));
+    h2 = plot_eng_trial(fpath, C, trial_chan, freq, cathAmp)
 
 end
 
