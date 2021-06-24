@@ -7,11 +7,11 @@ stim_on = false;
 stim_mux = true; 
 C = experiment_constants_Cucumber;
 
-stimChan = {[26]}; %cell array of stim channel rows
-amp = 210; %amplitudes of stim for each electrode
-freq = [3]; %array of frequencies of stim to test for each electrode
-stimTime = 120; %time in seconds, same for all stim (60s for 33Hz, 120s for 3Hz)
-max_fill = 11; %maximum fill volume
+stimChan = {[23]}; %cell array of stim channel rows
+amp = 180; %amplitudes of stim for each electrode
+freq = [33]; %array of frequencies of stim to test for each electrode
+stimTime = 10; %time in seconds, same for all stim (60s for 33Hz, 120s for 3Hz)
+max_fill = 8; %maximum fill volume
 fill_rate = 2; %mls per minute
 fill_start = 10; %seconds into recording that fill was started
 notes =  'Stim cystometry';

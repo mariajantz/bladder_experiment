@@ -1,4 +1,5 @@
 function h = plot_stim_trial(fpath, anChan, stimChan, freq, amp)
+%anChan = analog channels to plot
 
 %load stim data
 [~, hFile] = ns_OpenFile([fpath '.nev']);
