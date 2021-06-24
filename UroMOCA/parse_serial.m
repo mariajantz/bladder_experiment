@@ -24,7 +24,7 @@ function catheter_data = parse_serial(str)
     if length(splitStr) < 8
         return; % don't fill in anything if the string was the wrong format, i.e. could be an error/status message.
     end
-    
+  
     
     catheter_data.TimeStamp.HH = str2double(splitStr{1}(1:2));
     catheter_data.TimeStamp.MM = str2double(splitStr{1}(3:4));
