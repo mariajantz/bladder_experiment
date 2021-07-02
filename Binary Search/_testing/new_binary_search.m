@@ -3,7 +3,7 @@
 % search.
 
 %TODO: update monopolar multi headstage stim splitting.
-C = experiment_constants_Rubeus;
+C = experiment_constants_Nereus;
 
 warning('Is fast-settle on?')
 
@@ -93,13 +93,14 @@ end
 
 %% run the high amplitude survey (or analyze the survey based on existing
 %files)
+%C.STIM_MAP = C.STIM_MAP';
 [stim_freqs, response_locs] = high_amplitude_survey(C, savepath, datapath, baselinefile, 'testing', ~stim_on, 'survey_filenum', surveyfile, 'plotting', true);
 
 input('Press Enter to continue to binary search (or Ctrl+C to exit)')
 
 %run the binary search (or analyze the search based on existing files)
 
-%binary_search(C, savepath, datapath, stim_freqs, response_locs, 'testing', ~stim_on, 'data_filenums', searchChan_files, 'loadpath', loadpath)
+binary_search(C, savepath, datapath, stim_freqs, response_locs, 'testing', ~stim_on, 'data_filenums', searchChan_files, 'loadpath', loadpath)
 
 
 

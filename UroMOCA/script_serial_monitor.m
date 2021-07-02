@@ -1,7 +1,7 @@
 % Just read, parse, and display the serial port data stream
 
 % Serial Port
-s = serial('COM4','BaudRate',9600);
+s = serial('COM5','BaudRate',9600);
 
 fopen(s);
 
@@ -29,3 +29,8 @@ end
 
 fclose(s);
 delete(s);
+
+%to delete stuff: 
+%delete(instrfindall)
+%clear s
+%then re-run

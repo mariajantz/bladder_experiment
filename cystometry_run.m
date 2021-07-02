@@ -1,22 +1,24 @@
+%Run the entire code: it starts the recording, saves variables, manual stop
 
-%run and save variables for cystometry trials
-%starts recording itself, saves variables
-
+%===========================================================================================
 %EDIT THESE VARIABLES
-stim_on = false;
-stim_mux = true; 
-C = experiment_constants_Cucumber;
+stim_on = false;  %stim without using mux
+stim_mux = true;  %stim using mux
+C = experiment_constants_Dill;
 
-stimChan = {[23]}; %cell array of stim channel rows
-amp = 180; %amplitudes of stim for each electrode
+stimChan = {[47]}; %cell array of stim channel rows
+amp = 210; %amplitudes of stim for each electrode
 freq = [33]; %array of frequencies of stim to test for each electrode
-stimTime = 10; %time in seconds, same for all stim (60s for 33Hz, 120s for 3Hz)
-max_fill = 8; %maximum fill volume
-fill_rate = 2; %mls per minute
-fill_start = 10; %seconds into recording that fill was started
-notes =  'Stim cystometry';
+stimTime = 60; %time in seconds (30-60s for 33Hz, 60-120s for 3Hz)
 
-input('Are the volume fill info and notes set correctly for this trial? Enter to continue ')
+max_fill = 14.5; %maximum fill volume capacity; update per cat
+fill_rate = 2; %mls per minute
+fill_start = 10; %seconds into recording that fill was started **Give notice
+notes =  'Stim cystometry, minimal response on this channel in isovolumetric trials'; %Make sure this is correct each time
+%============================================================================================
+
+% Built in pause to check; this begins recording 
+input('Are the volume fill info and notes set correctly for this trial? Enter to continue to recording')
 
 %start trial - set up folders and then start recording on Trellis
 yr = num2str(year(datetime(datestr(now))));

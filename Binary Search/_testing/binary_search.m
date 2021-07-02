@@ -42,7 +42,9 @@ if ~isnan(loadpath)
 end
 
 chan_idx = 1:size(response_locs, 1);
-for iChan = chan_idx
+warning('Currently set to ONLY RUN FIRST CHANNEL')
+keyboard
+for iChan = 1%chan_idx
     if iChan ~=1 && iChan == chan_idx(1)
         warning('Has the start value for the binary search loop been updated?')
         keyboard

@@ -34,6 +34,8 @@ end
 %plot
 h = figure('Position', [339 417 953 533]); hold on;
 lwidth = [1.5, 1.5, 1.5, 1.5];
+%plot stimChan
+plot(sort([stimTimes stimTimes stimTimes]), repmat([0 3 NaN], 1, length(stimTimes)));
 for lr = fliplr(anChan)
     plot(1/30e3:1/30e3:length(cathWf(lr, :))/30e3, cathWf(lr, :), 'LineWidth', lwidth(lr));
 end
@@ -42,8 +44,8 @@ ylabel('Pressure (mmHg)');
 xlim([0 length(cathWf(lr, :))/30e3]);
 ylim([0 60]);
 title(sprintf('Stim chan: %s, Freq: %d, Amp: %d, File: %s', mat2str(stimChan), freq, amp, fpath(end-3:end)));
-%plot stimChan
-plot(sort([stimTimes stimTimes stimTimes]), repmat([0 3 NaN], 1, length(stimTimes)));
+
+
 box off;
 set(gca, 'TickDir', 'out', 'FontSize', 14);
 %legend({'Urethra 1', 'Urethra 2', 'Bladder', 'Stim'}, 'northeast');
