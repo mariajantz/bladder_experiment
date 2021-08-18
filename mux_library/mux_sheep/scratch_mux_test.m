@@ -5,7 +5,7 @@
 %Run these section by section
 %% (1) STARTUP: check fastsettle, set save folders
 %import cat information; is this your cat?
-C = experiment_constants_Dill;
+C = experiment_constants_Test;
 fprintf('Set up save folders\n')
 %set save folders
 yr = C.SURGERY_DATE(1:4);% num2str(year(datetime(datestr(now))));
@@ -41,7 +41,7 @@ keyboard
 
 %% (3.1) Connect to MUX
 %MUX setup
-ser = serial("COM3", "BaudRate",9600)
+ser = serial("COM3", "BaudRate",9600);
 fopen(ser)
 
 %to delete stuff, run the below then re-connect to serial
@@ -56,7 +56,84 @@ pause(12); %Wait to see if the mux connects
 set_monitor(ser,true) % monitor on
 % set_monitor(ser, false) % monitor off
 
-%% (4) Test a specific electrode and plot responses
+%% (4) Test electrodes 1 at a time and plot responses
+%This informs our channels for behavior trials; keep note of strong
+%responses.
+channel_layout = C.LAYOUT_MAP; 
+
+%===========================================================================================
+%EDIT THESE VARIABLES
+
+%For all channels, monopolar: 
+test_chan = reshape(channel_layout, 1, numel(channel_layout));
+test_chan = num2cell(test_chan(~isnan(test_chan)));
+
+%All channels, vertical bipoles: 
+% channel_layout = channel_layout'; 
+% toprow = channel_layout(1:end-size(channel_layout, 1)); 
+% bottomrow = channel_layout(size(channel_layout, 1)+1:end);
+% channel_layout = channel_layout'; 
+% test_chan = [toprow; bottomrow]; 
+% test_chan = test_chan(:, ~any(isnan(test_chan))); 
+% test_chan = num2cell(test_chan', size(test_chan, 1)); 
+
+%To choose individual channels: 
+%test_chan = {47, 39, 0, 23, 8}; 
+
+fxn_plot_on = true; 
+emg_plot_on = true;
+
+cathAmp = 210; 
+freq = 33; %33Hz to evoke void, 3Hz to relax bladder
+stimTime = 20;
+C.THRESH_REPS = stimTime*freq;
+C.QUIET_REC = 20; %10 for dex, 20 for behaving?
+bladder_fill = 'about 6 ml'; %Update this before you start running!
+%datapath = fullfile(rootpath, catFolder.name, 'Grapevine');
+%============================================================================================
+
+warning('Is bladder_fill value up to date?'); keyboard;
+
+for i = 1:length(test_chan)
+%     fwrite(ser, [2, 100, 0, 133])  % to disable MUX check
+    trial_chan = test_chan{i}; 
+    [e,s,p] = mux_assign(trial_chan);
+    fprintf("Ripple ch%d <==> E%d \n", [s;e])
+    
+    switch_mux(ser, p); 
+    baseline_filenum = find_curFile(datapath); 
+    %fpath = sprintf('%s\\datafile%04d', datapath, baseline_filenum); 
+    fpath = sprintf('%s\\datafile', datapath); 
+    set_monitor(ser, false);  % to disable MUX check
+    if isempty(C.HIGHAMP_HEADSTAGE_LOC) 
+        single_amp_stim(C, s, cathAmp, freq, fpath)
+    else
+        %using double headstage
+        single_amp_stim_combined(C, s, cathAmp, freq, fpath)
+    end
+
+    fprintf('Save info!\n')
+    save(sprintf('%s\\trial_vars%04d', savepath, baseline_filenum), 'trial_chan', 'channel_layout', 'bladder_fill', 'C', 'stimTime', 'cathAmp', 'freq', 's', 'e')
+    set_monitor(ser, true); %check MUX connection
+    fpath = sprintf('%s\\datafile%04d', datapath, baseline_filenum);
+    
+    fprintf('Plot this channel\n'); 
+    if fxn_plot_on
+        h = plot_stim_trial(fpath, 1, trial_chan, freq, cathAmp);
+        savefig(fullfile(savepath, sprintf('fxnltest_%d', baseline_filenum)));
+        saveas(gcf, fullfile(savepath, sprintf('fxnltest_%d.png', baseline_filenum)));
+    end
+    if emg_plot_on
+        h2 = plot_eng_trial(fpath, C, trial_chan, freq, cathAmp);
+        savefig(fullfile(savepath, sprintf('fxnltesteng_%d', baseline_filenum)));
+        saveas(gcf, fullfile(savepath, sprintf('fxnltesteng_%d.png', baseline_filenum)));
+    end
+end
+
+disp('Stim complete and data saved');
+
+
+%% (5) Set up a survey of some kind? 
 
 
 %% (3) High Amp Survey
@@ -183,60 +260,3 @@ save(sprintf('%s\\survey_vars%04d', savepath, baseline_filenum), 'baseline_nums'
 
 disp('Survey complete');
 
-%% (4) Individual channel tests (Isovolumetric)
-%This informs our channels for behavior trials; keep note of strong
-%responses.
-%Avocado: 9 at 170 is fine, 200 she doesn't like, chan 15 at 170 has strong
-%leg shakes and at 100 is uncomfortable, 115 is absolute max; chan 50 is fine at 100
-%but she's uncomfortable at 120. 
-channel_layout = C.LAYOUT_MAP; 
-
-%===========================================================================================
-%EDIT THESE VARIABLES
-test_chan = num2cell(reshape(channel_layout, 1, numel(channel_layout))); %all the channels
-test_chan = {47, 39, 0, 23, 8}; 
-%test_chan = {47, 39, 0, 22, 25, 23, 8, 42, test_chan{36:40}}; %next dex
-cathAmp = 210; 
-freq = 33; %33Hz to evoke void, 3Hz to relax bladder
-stimTime = 20;
-C.THRESH_REPS = stimTime*freq;
-C.QUIET_REC = 20; %10 for dex, 20 for behaving?
-bladder_fill = 'about 6 ml'; %Update this before you start running!
-%datapath = fullfile(rootpath, catFolder.name, 'Grapevine');
-%============================================================================================
-
-for i = 1:length(test_chan)
-%     fwrite(ser, [2, 100, 0, 133])  % to disable MUX check
-    trial_chan = test_chan{i}; 
-    [e,s,p] = mux_assign(trial_chan);
-    fprintf("Ripple ch%d <==> E%d \n", [s;e])
-    
-    switch_mux(ser, p); 
-    %pause?
-    %rename datapath
-    baseline_filenum = find_curFile(datapath); 
-    %fpath = sprintf('%s\\datafile%04d', datapath, baseline_filenum); 
-    fpath = sprintf('%s\\datafile', datapath); 
-    set_monitor(ser, false);  % to disable MUX check
-    single_amp_stim(C, s, cathAmp, freq, fpath)
-    
-%     cmd = single_elec_stim_cmd(C, s, cathAmp, freq);
-%     pause(C.QUIET_REC); 
-%     set_monitor(ser, false);
-%     xippmex('stimseq', cmd);
-%     set_monitor(ser, true); 
-%     pause(C.QUIET_REC); 
-    fprintf('Save info!!\n')
-    save(sprintf('%s\\trial_vars%04d', savepath, baseline_filenum), 'trial_chan', 'channel_layout', 'bladder_fill', 'C', 'stimTime', 'cathAmp', 'freq')
-    set_monitor(ser, true); 
-    fpath = sprintf('%s\\datafile%04d', datapath, baseline_filenum); 
-    h = plot_stim_trial(fpath, 1, trial_chan, freq, cathAmp)
-    savefig(fullfile(savepath, sprintf('fxnltest_%d', baseline_filenum)));
-    saveas(gcf, fullfile(savepath, sprintf('fxnltest_%d.png', baseline_filenum)));
-% % Comment plot below out if not recording from SurfS2-EMG/ENG
-%     h2 = plot_eng_trial(fpath, C, trial_chan, freq, cathAmp)
-%     savefig(fullfile(savepath, sprintf('fxnltesteng_%d', baseline_filenum)));
-%     saveas(gcf, fullfile(savepath, sprintf('fxnltesteng_%d.png', baseline_filenum)));
-end
-
-disp('Stim complete and data saved');
