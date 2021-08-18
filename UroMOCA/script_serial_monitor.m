@@ -29,3 +29,8 @@ end
 
 fclose(s);
 delete(s);
+
+%to delete stuff: 
+%delete(instrfindall)
+%clear s
+%then re-run

@@ -1,6 +1,6 @@
 
 %ONLY CHANGE THESE PARAMETERS
-C = experiment_constants_Laertes;
+C = experiment_constants_Nereus;
 yr = num2str(year(datetime(datestr(now))));
 
 savepath = sprintf('D:\\DataTanks\\%s\\%s\\Documents\\Experiment_Files\\', yr, C.CAT_NAME); %file path for saving constants/run info
@@ -15,12 +15,12 @@ if strcmp(notes_update, 'n')
     error('Update the notes')
 end
 
-notes = 'pelvic nerve stim, bladder fill close to full ~6ml.';
-
-stimTime = 10; %seconds of stimulation
+notes = 'nerve stim, isoflurane, rootlets recording.';
+%% 
+stimTime = 15; %seconds of stimulation
 freqs = [33]; %Hz each frequency is applied to all of the nerves
-amps = [20]; %uA of nerve cuff stimulation. Will run all of these amplitudes for each nerve
-nerverange = [2]; %Will run all of these nerves, one at a time
+amps = [250]; %uA of nerve cuff stimulation. Will run all of these amplitudes for each nerve
+nerverange = [1:6]; %Will run all of these nerves, one at a time
 % 1 - Pelvic, 2 - Pudendal, 3 - Sensory, 4 - Caudal Rectal, 5 - Deep
 % Perineal, 6 - Sciatic
 
@@ -32,7 +32,7 @@ C.REC_HEADSTAGE_LOC   = 'D';
 chanOrder             = {1:32, 129:160, 161:192, 193:224, 129:224, 385:416};
 stimLocation          = {'A', 'B1', 'B2', 'B3', 'B123', 'D'};
 C.ACTIVE_CHAN         = chanOrder{ismember(stimLocation, C.STIM_HEADSTAGE_LOC)};
-C.QUIET_REC           = 10; %seconds before and after stim
+C.QUIET_REC           = 1; %seconds before and after stim
 
 % if length(freqs)==1
 %     freqs = freqs*ones(size(nerverange));
@@ -57,9 +57,9 @@ for i = nerverange
         
         %save and overwrite after each cycle so we always have the saved file
         %about what we did.
-        save(sprintf('%snerve_cuff_stim%04d', savepath, filenums(1)), 'C', 'filenums', 'freq', 'freqs', 'stimTime', 'amps', 'stimulated_cuffs', 'nerverange', 'notes');
+        save(fullfile(savepath, sprintf('nerve_cuff_stim%04d', filenums(1))), 'C', 'filenums', 'freq', 'freqs', 'stimTime', 'amps', 'stimulated_cuffs', 'nerverange', 'notes');
         %fprintf('Pausing to let stimulation return to baseline\n');
-        pause(5); %to let the function return to baseline
+        %pause(5); %to let the function return to baseline
         
     end
 end

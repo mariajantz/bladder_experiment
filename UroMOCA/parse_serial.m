@@ -24,18 +24,28 @@ function catheter_data = parse_serial(str)
     if length(splitStr) < 8
         return; % don't fill in anything if the string was the wrong format, i.e. could be an error/status message.
     end
-    
+  
     
     catheter_data.TimeStamp.HH = str2double(splitStr{1}(1:2));
     catheter_data.TimeStamp.MM = str2double(splitStr{1}(3:4));
     catheter_data.TimeStamp.SS = str2double(splitStr{1}(5:6));
     catheter_data.TimeStamp.ms = str2double(splitStr{1}(7:9));
     catheter_data.TimeStamp.datetime = TimeStamp2datetime(splitStr{1});
-    
     catheter_data.Conductivity = str2double(splitStr{2}) / 19480; % value in volts
     catheter_data.Conductance = str2double(splitStr{3}) / 19480; % value in volts
     catheter_data.Pressure1 = (str2double(splitStr{4})/ 16.98) - 935.87; % value in cmH20
-    catheter_data.Battery = (1.5 * 1023) / str2double(splitStr{5});% battery value in volts
+    % catheter_data.Battery = (1.5 * 1023) / str2double(splitStr{5});% battery value in volts
+
+    % Convert to binary to get rid of device ID number; "take lower 10 bits"
+    bin = dec2bin(str2double(splitStr{5}));
+    if length(bin) < 10
+        error('Error: insufficient length(bin)')
+    end
+    input('Press Enter or Ctrl+C to exit')
+    % TO-DO: Error in line below stops code "Array indices must be positive integers or logical values."
+    truncated_bin = bin2dec(bin(end-9:end));
+    catheter_data.Battery = (1.5 * 1023) / truncated_bin;% battery value in volts
+
     catheter_data.Pressure2 = (str2double(splitStr{6}) / 16.98) - 935.87; % value in cmH20
     catheter_data.Third = str2double(splitStr{7}) / 19480; % value in volts
     
