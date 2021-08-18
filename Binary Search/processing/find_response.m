@@ -60,7 +60,8 @@ if size(baseline_snips{1}, 1)<numStimEvts %some cases have a slightly shorter ba
     warning('Doubling to add longer baseline time'); 
     baseline_snips = cellfun(@(x) [x; x], baseline_snips, 'UniformOutput', false); 
 end
-bootstrap_samples = randi([1 numStimEvts],[splitN N]);
+bootstrap_samples = randi([1 numStimEvts],[splitN N]); %randi(sample interval, size of array) where size of array = [200, 80% of number of events] if num stim pulses > 250, 
+% or [number stim events, 80% of number of events] if fewer stim pulses
 for iFold = 1:splitN
     idx = bootstrap_samples(iFold,:);
     %find a subset of baseline wf snips to compare
