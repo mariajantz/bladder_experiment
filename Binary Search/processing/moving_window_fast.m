@@ -28,15 +28,15 @@ function [fcn_result, windowStarts_sec] = moving_window_fast(wf, fs, featFn, win
     sliding_data = wf(window_idx);
     fcn_result   = featFn(sliding_data);
     
-% PLOT WF: PLOTS WINDOW STARTS AND ENDS
-subplot(2, 1, 1); hold on
-plot(wf)
-plot(windowStarts_idx, ones(size(windowStarts_idx)), 'o')
-plot(windowStarts_idx+windowSize_samples, ones(size(windowStarts_idx)), 'o')
-% PLOT SLIDING DATA???
-subplot(2, 1, 2); hold on
-plot(sliding_data')
-hold on
-plot(fcn_result, 'k', 'LineWidth', 2)
+% % PLOT WF: PLOTS WINDOW STARTS AND ENDS
+% subplot(2, 1, 1); hold on
+% plot(wf)
+% plot(windowStarts_idx, ones(size(windowStarts_idx)), 'o')
+% plot(windowStarts_idx+windowSize_samples, ones(size(windowStarts_idx)), 'o')
+% % PLOT SLIDING DATA???
+% subplot(2, 1, 2); hold on
+% plot(sliding_data')
+% hold on
+% plot(fcn_result, 'k', 'LineWidth', 2)
 
 end

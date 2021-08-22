@@ -5,7 +5,7 @@
 %Run these section by section
 %% (1) STARTUP: check fastsettle, set save folders
 %import cat information; is this your cat?
-C = experiment_constants_Test;
+C = experiment_constants_Alfredo;
 fprintf('Set up save folders\n')
 %set save folders
 yr = C.SURGERY_DATE(1:4);% num2str(year(datetime(datestr(now))));
@@ -41,7 +41,8 @@ keyboard
 
 %% (3.1) Connect to MUX
 %MUX setup
-ser = serial("COM3", "BaudRate",9600);
+fprintf('Open serial connection to MUX\n');
+ser = serial("COM4", "BaudRate",9600);
 fopen(ser)
 
 %to delete stuff, run the below then re-connect to serial
@@ -65,8 +66,15 @@ channel_layout = C.LAYOUT_MAP;
 %EDIT THESE VARIABLES
 
 %For all channels, monopolar: 
-test_chan = reshape(channel_layout, 1, numel(channel_layout));
+% test_chan = reshape(channel_layout, 1, numel(channel_layout));
+% test_chan = num2cell(test_chan(~isnan(test_chan)));
+
+% checkerboard
+test_idx = logical(repmat([1 0 1 0 1 0 1 0; 0 1 0 1 0 1 0 1], 4, 1));
+test_chan = channel_layout(test_idx);
 test_chan = num2cell(test_chan(~isnan(test_chan)));
+
+%test_chan = num2cell([23, 32, 31, 41, 21, 0, 1, 18, 17]');
 
 %All channels, vertical bipoles: 
 % channel_layout = channel_layout'; 
@@ -76,19 +84,21 @@ test_chan = num2cell(test_chan(~isnan(test_chan)));
 % test_chan = [toprow; bottomrow]; 
 % test_chan = test_chan(:, ~any(isnan(test_chan))); 
 % test_chan = num2cell(test_chan', size(test_chan, 1)); 
+% test_chan = test_chan(1:3:end);
 
 %To choose individual channels: 
-%test_chan = {47, 39, 0, 23, 8}; 
+%test_chan = {54}; 
 
 fxn_plot_on = true; 
 emg_plot_on = true;
+mux_on = true; 
 
-cathAmp = 210; 
+cathAmp = 800; 
 freq = 33; %33Hz to evoke void, 3Hz to relax bladder
-stimTime = 20;
+stimTime = 10;
 C.THRESH_REPS = stimTime*freq;
-C.QUIET_REC = 20; %10 for dex, 20 for behaving?
-bladder_fill = 'about 6 ml'; %Update this before you start running!
+C.QUIET_REC = 10; %10 for dex, 20 for behaving?
+bladder_fill = 'about 300 ml, dripping'; %Update this before you start running!
 %datapath = fullfile(rootpath, catFolder.name, 'Grapevine');
 %============================================================================================
 
@@ -97,14 +107,19 @@ warning('Is bladder_fill value up to date?'); keyboard;
 for i = 1:length(test_chan)
 %     fwrite(ser, [2, 100, 0, 133])  % to disable MUX check
     trial_chan = test_chan{i}; 
-    [e,s,p] = mux_assign(trial_chan);
-    fprintf("Ripple ch%d <==> E%d \n", [s;e])
-    
-    switch_mux(ser, p); 
+    if mux_on
+        [e,s,p] = mux_assign(trial_chan);
+        fprintf("Ripple ch%d <==> E%d \n", [s;e])
+        
+        switch_mux(ser, p);
+        set_monitor(ser, false);  % to disable MUX check
+    else
+        s = trial_chan; e = nan; 
+    end
     baseline_filenum = find_curFile(datapath); 
     %fpath = sprintf('%s\\datafile%04d', datapath, baseline_filenum); 
     fpath = sprintf('%s\\datafile', datapath); 
-    set_monitor(ser, false);  % to disable MUX check
+   
     if isempty(C.HIGHAMP_HEADSTAGE_LOC) 
         single_amp_stim(C, s, cathAmp, freq, fpath)
     else
@@ -114,7 +129,9 @@ for i = 1:length(test_chan)
 
     fprintf('Save info!\n')
     save(sprintf('%s\\trial_vars%04d', savepath, baseline_filenum), 'trial_chan', 'channel_layout', 'bladder_fill', 'C', 'stimTime', 'cathAmp', 'freq', 's', 'e')
-    set_monitor(ser, true); %check MUX connection
+    if mux_on
+        set_monitor(ser, true); %check MUX connection
+    end
     fpath = sprintf('%s\\datafile%04d', datapath, baseline_filenum);
     
     fprintf('Plot this channel\n'); 

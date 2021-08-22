@@ -1,12 +1,12 @@
-function C = experiment_constants_Test
+function C = experiment_constants_Alfredo
 % =========================================================================
 % ANIMAL AND HEADSTAGE BACKGROUND
 % =========================================================================
-C.CAT_NAME            = 'TestMUXSheep';   % Animal name
+C.CAT_NAME            = 'Alfredo';   % Animal name
 C.STIMULATOR_TYPE     = 'Grapevine';
 C.SURGERY_DATE        = '2021-08-20'; %YYYY-MM-DD
 C.ARRAY_TYPE          = 'MicroLeads';       % Brand of array, ie 'MicroLeads', 'Ripple', 'Blackrock'
-C.LOCATION            = 'Epidural - MUX';     % Options: 'DRG - S1', 'Epidural - L6', etc
+C.LOCATION            = 'Epidural - MUX64_caudalshift';     % Options: 'DRG - S1', 'Epidural - L6', etc
 % C.ELECTRODE_DIM       = [4 4];          % 4x4, 4x8, etc - first dimension is electrodes 1, 2, 3...
 C.REC_HEADSTAGE       = 'surfs2_raw';   % surfs2_raw/surfs_raw/surfd_raw/nano2_raw/nano_raw
 C.REC_HEADSTAGE_LOC   = 'A';            % Trellis value of recording headstage, usually 'A'
@@ -15,7 +15,7 @@ C.STIM_HEADSTAGE_LOC  = 'B1';           % Trellis value of stim headstage, optio
 C.HIGHAMP_HEADSTAGE_LOC = '';         % if using two headstages to stimulate, include this - otherwise, leave as empty string ''
 C.REC_FS              = 30e3;           % recording at 30k Hz
 %C.ANALOG_CHAN         = {'Bladder'}; 
-C.ANALOG_CHAN         = {'Bladder', 'LegX', 'LegY', 'InfusionPump'};
+C.ANALOG_CHAN         = {'Bladder', 'LegX', 'LegY', 'LegZ'};
 C.TEST_TYPE           = 'Propofol'; % 'Behaving', 'Dex', 'Alpha Chloralose'
 
 % Switch channels to match location of the stimulation headstage
@@ -24,22 +24,22 @@ stimLocation          = {'A', 'B1', 'B2', 'B3', 'B123', 'D'};
 C.ACTIVE_CHAN         = chanOrder{ismember(stimLocation, C.STIM_HEADSTAGE_LOC)};
 C.HIGHAMP_ACTIVE_CHAN = [chanOrder{ismember(stimLocation, C.HIGHAMP_HEADSTAGE_LOC)}]; %this is empty if the high amp headstage loc variable is empty
 % 
-% C.LAYOUT_MAP          = [nan, nan, 60, 55, 58, 63, nan, nan; ...
-%     24, 54, 47, 46, 53, 52, 59, 25; ...
-%     23, 38, 21, 20, 29, 28, 45, 26; ...
-%     22, 31, 10, 2, 7, 19, 36, 27; ...
-%     32, 30, 0, 13, 16, 9, 37, 35; ...
-%     48, 41, 11, 3, 6, 18, 42, 51; ...
-%     49, 39, 1, 4, 5, 8, 44, 50; ...
-%     56, 40, 12, 14, 15, 17,43, 57];  %microleads MUX Sheep
+C.LAYOUT_MAP          = [nan, nan, 60, 55, 58, 63, nan, nan; ...
+    24, 54, 47, 46, 53, 52, 59, 25; ...
+    23, 38, 21, 20, 29, 28, 45, 26; ...
+    22, 31, 10, 2, 7, 19, 36, 27; ...
+    32, 30, 0, 13, 16, 9, 37, 35; ...
+    48, 41, 11, 3, 6, 18, 42, 51; ...
+    49, 39, 1, 4, 5, 8, 44, 50; ...
+    56, 40, 12, 14, 15, 17,43, 57];  %microleads MUX Sheep
 
 % C.LAYOUT_MAP          = [26, 25; 28, 27; 30, 29; 32, 31]; 
-C.LAYOUT_MAP          = [25; 26; 27; 28; 29; 30; 31; 32]; 
+%C.LAYOUT_MAP          = [25; 26; 27; 28; 29; 30; 31; 32]; 
 
 % =========================================================================
 % STIMULATION PARAMETERS 
 % =========================================================================
-C.MAX_AMP             = 400;            % maximum amplitude stimulation on cathode in uA
+C.MAX_AMP             = 500;            % maximum amplitude stimulation on cathode in uA
 C.MAX_AMP_REPS        = 50;             % number of pulses applied in a high amplitude survey trial       
 C.THRESH_REPS         = 320;            % number of pulses applied in full data collection trials
 C.STIM_FREQUENCY      = [20 100];       % first (low) freq used for high amp survey to capture 
@@ -62,6 +62,9 @@ end
 % this is then remapped onto the channel layout provided above
 
 C.STIM_MAP = num2cell([1:8]'); %basically just a placeholder to not break this
+%C.STIM_MAP = num2cell([1:7; 2:8]');
+%C.STIM_MAP = num2cell([1:2:5 2:2:6; 3:2:7 4:2:8]');
+%C.STIM_MAP = num2cell([1:2:7; 2:2:8]');
 %====================================STIMULATION TYPES============================================
 %Ripple (32 channel arrays)
 %C.STIM_MAP = num2cell(1:32)'; % MONOPOLAR 
@@ -103,7 +106,7 @@ C.STIM_MAP = remap_stim(C.LAYOUT_MAP, C.STIM_MAP);
 % =========================================================================
 % ANALYSIS PARAMETERS 
 % =========================================================================
-C.AMP_MIN_DIFF = 10; % uA; this determines step size in binary search 
+C.AMP_MIN_DIFF = 25; % uA; this determines step size in binary search 
 C.AMP_MAX_DIFF = 100; 
 C.PRE_WINDOW = 1; % ms; sets the amount of time prior to stimulation in window
 % C.SLIDING_WINDOW_DURATION  = 250e-6;
@@ -121,14 +124,15 @@ end
 % NERVE CUFF PARAMETERS
 % =========================================================================
 
-C.SEARCH_CUFFS_IDX = 1:5; 
+C.SEARCH_CUFFS_IDX = 1:6; 
 % channel maps for bipolar nerve cuffs: remember to zero-index them. 
 bipolar_cuff_mapping = { ...  
-        [0 1] 'Pelv'
-        [4 5] 'Pudendal'
-        [8 9] 'EUS EMG'
-        [12 13] 'Abd EMG'
-        [16 17] 'Glut EMG'
+        [0 1] 'TA EMG'
+        [2 3] 'Soleus EMG'
+        [4 5] 'Quadriceps EMG'
+        [6 7] 'Rectal EMG'
+        [8 9] 'Glut EMG'
+        [10 11] 'Perispinal EMG'
 };
 
 tripolar_cuff_mapping    = { ...
