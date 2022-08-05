@@ -24,7 +24,7 @@ for j=anChan
     cathWf(j, :) = read_continuousData([fpath '.ns5'], 'analog', j);
     if j==1 || j==2
         disp('convert transbridge')
-        cathWf(j, :) = cathWf(j, :)/50;
+        cathWf(j, :) = cathWf(j, :)/5;
     else
         disp('convert millar');
         cathWf(j, :) = cathWf(j, :)/10;

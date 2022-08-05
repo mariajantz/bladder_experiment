@@ -1,6 +1,6 @@
 
 %ONLY CHANGE THESE PARAMETERS
-C = experiment_constants_Nereus;
+C = experiment_constants_Dill;
 yr = num2str(year(datetime(datestr(now))));
 
 savepath = sprintf('D:\\DataTanks\\%s\\%s\\Documents\\Experiment_Files\\', yr, C.CAT_NAME); %file path for saving constants/run info
@@ -15,7 +15,7 @@ if strcmp(notes_update, 'n')
     error('Update the notes')
 end
 
-notes = 'nerve stim, isoflurane, rootlets recording.';
+notes = 'First awake nerve cuff stim';
 %% 
 stimTime = 15; %seconds of stimulation
 freqs = [33]; %Hz each frequency is applied to all of the nerves

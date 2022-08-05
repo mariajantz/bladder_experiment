@@ -3,7 +3,7 @@
 % search.
 
 %TODO: update monopolar multi headstage stim splitting.
-C = experiment_constants_Nereus;
+C = experiment_constants_Oceanus;
 
 warning('Is fast-settle on?')
 

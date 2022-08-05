@@ -3,6 +3,11 @@
 % Serial Port
 s = serial('COM5','BaudRate',9600);
 
+%to delete stuff: 
+%delete(instrfindall)
+%clear s
+%then re-run
+
 fopen(s);
 
 % Open a figure window that user can close to quit this read loop
@@ -29,8 +34,3 @@ end
 
 fclose(s);
 delete(s);
-
-%to delete stuff: 
-%delete(instrfindall)
-%clear s
-%then re-run

@@ -3,18 +3,18 @@
 %===========================================================================================
 %EDIT THESE VARIABLES
 stim_on = false;  %stim without using mux
-stim_mux = true;  %stim using mux
+stim_mux = false;  %stim using mux; off for control
 C = experiment_constants_Dill;
 
-stimChan = {[47]}; %cell array of stim channel rows
-amp = 210; %amplitudes of stim for each electrode
+stimChan = {[22,42]}; %cell array of stim channel rows
+amp = 160; %amplitudes of stim for each electrode
 freq = [33]; %array of frequencies of stim to test for each electrode
 stimTime = 60; %time in seconds (30-60s for 33Hz, 60-120s for 3Hz)
 
-max_fill = 14.5; %maximum fill volume capacity; update per cat
+max_fill = 23; %maximum fill volume capacity; update per cat
 fill_rate = 2; %mls per minute
 fill_start = 10; %seconds into recording that fill was started **Give notice
-notes =  'Stim cystometry, minimal response on this channel in isovolumetric trials'; %Make sure this is correct each time
+notes =  'Recording for UroMOCA; awake, not filling, simultaneuous with catheter pressure'; %Make sure this is correct each time
 %============================================================================================
 
 % Built in pause to check; this begins recording 
@@ -39,6 +39,10 @@ recStart = tic;
 save([savepath sprintf('\\cystometry%04d', curFile)], 'C', 'curFile', 'max_fill', 'fill_rate', 'fill_start', 'notes')
 
 %% stim
+%Sometimes matlab gives error using xippmex (stim must be disabled), try:
+%xippmex('stim', 'enable', 0)
+%fclose all
+
 if stim_mux
     cmd = [];
     %get command and run stimulation
@@ -48,12 +52,12 @@ if stim_mux
     fprintf("Ripple ch%d <==> E%d \n", [ripple_chan;mux_chan])
     switch_mux(ser, mux_cmd); 
     
-    for i = 1:size(stimChan, 1)
+%     for i = 1:size(stimChan, 1)
         C.THRESH_REPS = stimTime*freq;
         %[cmd(i), ~] = single_amp_cathodal_stim(C, stimChan(i, :), amps(i), freqs(i)); %all cathodal stim
-        [cmd2, ~] = single_elec_stim_cmd(C, ripple_chan(i), amp, freq); %multichannel stim
+        [cmd2, ~] = single_elec_stim_cmd(C, ripple_chan, amp, freq); %multichannel stim
         cmd = [cmd cmd2];
-    end
+%     end
     
     input('Press Enter to execute stimulation pulse ')
     set_monitor(ser, false);
