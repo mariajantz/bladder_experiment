@@ -14,6 +14,7 @@ shuffle_map = C.STIM_MAP(randperm(length(C.STIM_MAP)), :);
 [xippRes, stimVal, stimChan, ~] = set_resolution(C, C.MAX_AMP, cell2mat(shuffle_map));
 
 %set resolution
+xippmex('stim', 'enable', 0)
 for i = 1:length(xippRes)
     xippmex('stim', 'res', unique(stimChan(:, :, i)), xippRes(i));
 end
@@ -133,6 +134,7 @@ pause(delay_time);%just in case it doesn't quite catch recording of first stim
 full_pause = full_pause-delay_time;
 
 % quiet recording
+xippmex('stim', 'enable', 1)
 fprintf('Quiet recording for %.1f s\n', C.QUIET_REC);
 pause(C.QUIET_REC);
 full_pause = full_pause-C.QUIET_REC;

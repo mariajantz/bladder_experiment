@@ -1,11 +1,7 @@
 % Serial Port
-%to delete stuff: 
-%delete(instrfindall)
-%clear s
-%then re-run
+% fclose(instrfind);
+% delete(instrfind);
 s = serial('COM5','BaudRate',9600);
-
-% MAKE SURE matlab path/current folder is the place you want this log saved
 
 % DAQ
 daq_ch_pressure = 0;
@@ -37,10 +33,8 @@ fID = fopen(fname, 'wt');
 % Open a figure window that user can close to quit this read loop
 fh = figure('Name', 'Close to stop reading serial data stream.', 'NumberTitle','off');
 
-% fprintf('Analog output scaling is %0.1f Volts/unit of measurement.\n', 1/ao_scale);
-fprintf('Analog output scaling is %d mV/unit of measurement.\n', 1000/ao_scale); %unit for pressure mmHg
-fprintf(fID, 'Analog output scaling is %d mV/unit of measurement.\n', 1000/ao_scale); % write to file
-% fprintf(fID, 'Analog output scaling is %0.1f Volts/unit of measurement.\n', 1/ao_scale); % write to file
+fprintf('Analog output scaling is %0.1f Volts/unit of measurement.\n', 1000/ao_scale);%unit for pressure mmHg
+fprintf(fID, 'Analog output scaling is %0.1f Volts/unit of measurement.\n', 1000/ao_scale); % write to file
 
 
 fopen(s);
@@ -54,10 +48,10 @@ while ishandle(fh)
 
 %         datalog{i} = pstr.Pressure1;
         if ~isempty(pstr.TimeStamp.datetime)
-            fprintf('[%s] %s -- Pressure: %0.2f,  Volume: %0.2f, Battery: %0.2f, Timestamp: %s\n', ...
-                datestr(now, 'HH:MM:SS.FFF AM'), pstr.SerialStr, pstr.Pressure1, pstr.Conductance, pstr.Battery, datestr(pstr.TimeStamp.datetime, 'HH:MM:SS.FFF'));
-            fprintf(fID, '[%s] %s -- Pressure: %0.2f,  Volume: %0.2f, Battery: %0.2f, Timestamp: %s\n', ... % write to file
-                datestr(now, 'HH:MM:SS.FFF AM'), pstr.SerialStr, pstr.Pressure1, pstr.Conductance, pstr.Battery, datestr(pstr.TimeStamp.datetime, 'HH:MM:SS.FFF')); 
+            fprintf('[%s] Pressure: %0.2f,  Volume: %0.2f, Battery: %0.2f, Timestamp: %s\n', ...
+                datestr(now, 'HH:MM:SS.FFF AM'), pstr.Pressure1, pstr.Conductance, pstr.Battery, datestr(pstr.TimeStamp.datetime, 'HH:MM:SS.FFF'));
+            fprintf(fID, '[%s] Pressure: %0.2f,  Volume: %0.2f, Battery: %0.2f, Timestamp: %s\n', ... % write to file
+                datestr(now, 'HH:MM:SS.FFF AM'), pstr.Pressure1, pstr.Conductance, pstr.Battery, datestr(pstr.TimeStamp.datetime, 'HH:MM:SS.FFF')); 
             
             analog_out(session, [pstr.Pressure1, pstr.Conductance], ao_scale); % output the analog waveform
         else

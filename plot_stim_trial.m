@@ -11,6 +11,7 @@ for lbl = 1:length(tempLabel)
         tempLabel{lbl} = ''; %convert to string for finding ability
     end
 end
+
 stim_in = find(contains(tempLabel, 'stim'));
 numEvts = hFile.Entity(stim_in).Count;
 stimTimes = zeros(1,numEvts);
@@ -24,7 +25,7 @@ for j=anChan
     cathWf(j, :) = read_continuousData([fpath '.ns5'], 'analog', j);
     if j==1 || j==2
         disp('convert transbridge')
-        cathWf(j, :) = cathWf(j, :)/5;
+        cathWf(j, :) = cathWf(j, :)/50;
     else
         disp('convert millar');
         cathWf(j, :) = cathWf(j, :)/10;
@@ -49,4 +50,3 @@ title(sprintf('Stim chan: %s, Freq: %d, Amp: %d, File: %s', mat2str(stimChan), f
 box off;
 set(gca, 'TickDir', 'out', 'FontSize', 14);
 %legend({'Urethra 1', 'Urethra 2', 'Bladder', 'Stim'}, 'northeast');
-

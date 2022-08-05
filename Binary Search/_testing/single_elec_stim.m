@@ -12,6 +12,7 @@ end
 
 % choose correct port numbers, stimulation resolution, and amplitude of
 % stimulation
+xippmex('stim', 'enable', 0)
 [xippRes, stimVal, stimChan, actualAmp] = set_resolution(C, cathAmp, stimChan);
 
 %TODO check this changes resolution on both stimulators - otherwise need
@@ -114,6 +115,7 @@ else
 end
 
 % quiet recording
+xippmex('stim', 'enable', 1)
 fprintf('Quiet recording for %.1f s\n', C.QUIET_REC);
 pause(C.QUIET_REC);
 

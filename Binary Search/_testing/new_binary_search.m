@@ -102,5 +102,15 @@ input('Press Enter to continue to binary search (or Ctrl+C to exit)')
 
 binary_search(C, savepath, datapath, stim_freqs, response_locs, 'testing', ~stim_on, 'data_filenums', searchChan_files, 'loadpath', loadpath)
 
-
+search_files = dir(fullfile(savepath, 'stimChan_trial*')); 
+for i = 1:length(search_files)
+    if str2double(search_files(i).name(end-7:end-4))>baselinefile
+        %print out the variables - figure out first recruitment each
+        %channel
+        a = load(fullfile(savepath, search_files(i).name)); 
+        fprintf('Electrode %d\n', a.stimChan)
+        disp(a.actual_amps)
+        disp(a.num_responses)
+    end
+end
 

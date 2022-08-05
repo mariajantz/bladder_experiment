@@ -11,6 +11,19 @@ function C = experiment_constants(subName)
 
 switch subName
     
+    case 'Beans'
+        C.ROOT_PATH = 'P:\data_raw\cat\2020\Beans-20201201';
+        C.ELECTRODE_TYPE = 'MicroLeads MUX v1';
+        C.BIPOLAR_CUFF_MAPPING = { ...  
+        [0 1] 'Pelv'
+        [4 5] 'Pudendal'
+        [8 9] 'EUS EMG'
+        [12 13] 'Abd EMG'
+        [16 17] 'Glut EMG'};
+    C.LAYOUT_MAP = [18, 1, 5, 17, 37; 32, 8, 2, 6, 27; 28, 0, 4, 16, 26; ...
+    19, 9, 3, 7, 31; 39, 20, 23, 15, 51; 50, 34, 21, 24, 42; ...
+    40, 11, 13, 35, 46; 45, 10, 22, 25, 41];
+    
     case 'Bacchus'
         C.ROOT_PATH = 'R:\data_raw\cat\2017\Bacchus-20171212';
         C.EXPT_DATE = '12-12-17';
@@ -130,6 +143,25 @@ switch subName
         C.TRIPOLAR_CUFF_MAPPING = {...
             [12 13] 'Sciatic Distal' };
         C.LAYOUT_MAP = reshape([2:2:32 1:2:31], 4, 8);
+        
+    case 'Laertes'
+        C.ROOT_PATH = 'R:\data_raw\cat\2021\Laertes-20210202'; %TODO fix
+        C.EXPT_DATE = '02-02-21';
+        
+        C.REC_HEADSTAGE = 'surfs2';
+        C.ELECTRODE_TYPE = 'Rootlet-Nerve-Cuffs';
+        C.BIPOLAR_CUFF_MAPPING = { ...
+            [0 1]   'Pelv'
+            [2 3]   'Pudendal'
+            [4 5]   'Combined'
+            [6 7]   'Deep Per'
+            [8 9]   'Sensory'
+            [10 11] 'Caudal Rectal'
+            [12 13] 'Sciatic Proximal'};
+        
+        C.TRIPOLAR_CUFF_MAPPING = {...
+            [14 15] 'Sciatic Distal' };
+        C.LAYOUT_MAP = ([1:2:12; 2:2:12]);
         
     case 'AlexanderKeith'
         C.ROOT_PATH = 'R:\data_raw\cat\2018\AlexanderKeith-20180227';
@@ -983,5 +1015,7 @@ C.RMS_THRESHOLD_MULTIPLIER = 4; %how high above threshold must something be to r
 C.MIN_RESPONSE_LATENCY     = 1e-3;
 C.MIN_RESPONSE_EMG         = 2e-3; %longer response blanking time for EMG
 C.NCUFF_FILTER_ARGS = {2, 300, 'high'}; %Args are input to Butterworth, then applied with filtfilt
+
+C.ROOT_PATH = ['P' C.ROOT_PATH(2:end)];
 
 end
