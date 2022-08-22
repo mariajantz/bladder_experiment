@@ -33,8 +33,8 @@ fID = fopen(fname, 'wt');
 % Open a figure window that user can close to quit this read loop
 fh = figure('Name', 'Close to stop reading serial data stream.', 'NumberTitle','off');
 
-fprintf('Analog output scaling is %0.1f Volts/unit of measurement.\n', 1/ao_scale);
-fprintf(fID, 'Analog output scaling is %0.1f Volts/unit of measurement.\n', 1/ao_scale); % write to file
+fprintf('Analog output scaling is %0.1f Volts/unit of measurement.\n', 1000/ao_scale);%unit for pressure mmHg
+fprintf(fID, 'Analog output scaling is %0.1f Volts/unit of measurement.\n', 1000/ao_scale); % write to file
 
 
 fopen(s);

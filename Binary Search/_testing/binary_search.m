@@ -42,6 +42,10 @@ if ~isnan(loadpath)
 end
 
 chan_idx = 1:size(response_locs, 1);
+
+% warning('Currently set to ONLY RUN FIRST CHANNEL')
+% keyboard
+
 for iChan = chan_idx
     if iChan ~=1 && iChan == chan_idx(1)
         warning('Has the start value for the binary search loop been updated?')
@@ -103,6 +107,7 @@ for iChan = chan_idx
             %a = tic; 
             chanSnips = single_elec_split(C, fullfile(datapath, sprintf('datafile%04d', curFile)));
             % find_response for all cuffs
+            fprintf('Find response\n')
             [~, cuff_resp, ~] = find_response(C, chanSnips(C.SEARCH_CUFFS_IDX, :), baseline_wf); %TODO test for both max amp and single amp
             num_responses = [num_responses sum(cuff_resp)];
             fprintf('Number of responses found: %d\n', sum(cuff_resp)); 

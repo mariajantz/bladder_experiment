@@ -1,0 +1,34 @@
+Analog output scaling is 0.1 Volts/unit of measurement.
+[11:26:19.733 AM] NoLock
+[11:26:19.920 AM] NoLock
+[11:26:20.107 AM] NoLock
+[11:26:20.205 AM] SynctoLong
+[11:26:20.406 AM] NoLock
+[11:26:20.582 AM] NoLock
+[11:26:20.793 AM] NoLock
+[11:26:20.967 AM] NoLock
+[11:26:21.165 AM] NoLock
+[11:26:21.344 AM] NoLock
+[11:26:21.553 AM] NoLock
+[11:26:21.749 AM] NoLock
+[11:26:21.926 AM] NoLock
+[11:26:22.132 AM] NoLock
+[11:26:22.309 AM] NoLock
+[11:26:22.507 AM] NoLock
+[11:26:22.693 AM] NoLock
+[11:26:22.892 AM] NoLock
+[11:26:23.071 AM] NoLock
+[11:26:23.267 AM] NoLock
+[11:26:23.446 AM] NoLock
+[11:26:23.657 AM] NoLock
+[11:26:23.833 AM] NoLock
+[11:26:24.030 AM] NoLock
+[11:26:24.221 AM] NoLock
+[11:26:24.418 AM] NoLock
+[11:26:24.559 AM] Pressure: -935.87,  Volume: 0.00, Battery: Inf, Timestamp: 00:29:28.242
+[11:26:24.567 AM] HeaderWrong
+[11:26:24.710 AM] NoLock
+[11:26:24.889 AM] NoLock
+[11:26:25.088 AM] NoLock
+[11:26:25.268 AM] NoLock
+[11:26:25.469 AM] NoLock

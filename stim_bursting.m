@@ -1,7 +1,7 @@
 %do pulsing - designed for functional tests where animal voided AFTER stim
 %ended, so that we could start/stop rapidly
 
-C = experiment_constants_Rumpus;
+C = experiment_constants_Sleeman;
 yr = num2str(year(datetime(datestr(now))));
 savepath = sprintf('D:\\DataTanks\\%s\\%s\\Documents\\Experiment_Files\\', yr, C.CAT_NAME); %file path for saving constants/run info
 savepath = [savepath C.LOCATION '\'];
@@ -13,13 +13,13 @@ datapath = sprintf('D:\\DataTanks\\%s\\%s\\Grapevine', yr, C.CAT_NAME);
 
 plot_chan = [1]; %analog channels to plot
 
-bladder_fill_ml = 7; %amount of bladder fill at beginning
-stimChan = [10 18];
-amp = 400;%{[500]}; %get several amplitudes - sub threshold eng, emg, super, long latency {300,[100 200],300}
+bladder_fill_ml = 5; %amount of bladder fill at beginning
+stimChan = [13 21];
+amp = 350;%{[500]}; %get several amplitudes - sub threshold eng, emg, super, long latency {300,[100 200],300}
 freq = 33; %quick - 33
 
 number_burst_cycles = 12; %number of times to burst/gap
-each_burst_time = 3; %length of each burst in seconds
+each_burst_time = 5; %length of each burst in seconds
 gap_time = 2; %time between bursts in seconds
 
 pre_quiet = 30; %quiet recording before stim 60 - quick 10
@@ -64,6 +64,7 @@ save(sprintf('%sfunctional_stim_burst%04d', savepath, curFile), 'stimChan', 'amp
     'curFile', 'pre_quiet', 'post_quiet', 'cmd', 'bladder_fill_ml', 'number_burst_cycles', 'each_burst_time', 'gap_time');
 
 %% plotting yikes
+clear cathWf
 curFile = curFile + 1; 
 last_file = [datapath sprintf('\\datafile%04d', curFile-1)];
 
@@ -107,7 +108,7 @@ xlabel('Time (s)');
 ylabel('Pressure (mmHg)');
 xlim([0 length(cathWf(c, :))/30e3]);
 ylim([0 60]);
-title(sprintf('Stim chan: %d %d, Freq: %d, Amp: %d, File: %d', last_stimChan, last_freq, last_amp, curFile-1));
+title(sprintf('Stim chan: %d %d, Freq: %d, Amp: %d, File: %d', stimChan, freq, amp, curFile-1));
 %plot stimChan
 plot(sort([stimTimes stimTimes stimTimes]), repmat([0 3 NaN], 1, length(stimTimes)));
 box off;

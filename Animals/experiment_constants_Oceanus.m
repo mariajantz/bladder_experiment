@@ -6,7 +6,8 @@ C.CAT_NAME            = 'Oceanus';   % Animal name
 C.STIMULATOR_TYPE     = 'Grapevine';
 C.SURGERY_DATE        = '2022-02-01'; %YYYY-MM-DD
 C.ARRAY_TYPE          = 'R01_rootlet_hooks';       % Brand of array, ie 'MicroLeads', 'Ripple', 'Blackrock'
-C.LOCATION            = 'Rootlets_S1';     % Options: 'DRG - S1', 'Epidural - L6', etc
+C.LOCATION            = 'Rootlets_S3';     % Options: 'DRG - S1', 'Epidural - L6', etc
+
 % C.ELECTRODE_DIM       = [4 4];          % 4x4, 4x8, etc - first dimension is electrodes 1, 2, 3...
 C.REC_HEADSTAGE       = 'surfs2_raw';   % surfs2_raw/surfs_raw/surfd_raw/nano2_raw/nano_raw
 C.REC_HEADSTAGE_LOC   = 'A';            % Trellis value of recording headstage, usually 'A'
@@ -24,6 +25,8 @@ stimLocation          = {'A', 'B1', 'B2', 'B3', 'B123', 'D'};
 C.ACTIVE_CHAN         = chanOrder{ismember(stimLocation, C.STIM_HEADSTAGE_LOC)};
 C.HIGHAMP_ACTIVE_CHAN = [chanOrder{ismember(stimLocation, C.HIGHAMP_HEADSTAGE_LOC)}]; %this is empty if the high amp headstage loc variable is empty
 
+C.ROOTLET_IDX         = 0; 
+C.NOTES               = 'whole root, cut';
 C.LAYOUT_MAP          = [1 2; 3 4];   %R01 hooks (4 remaining - 2 pairs, others trimmed off)
 % C.LAYOUT_MAP          = ([1:8;9:16;17:24]);   %microleads
 %C.LAYOUT_MAP          = flipud([26:2:32; 25:2:31; 18:2:24; 17:2:23; 10:2:16; 9:2:15; 2:2:8; 1:2:7]); %ripple
@@ -31,7 +34,7 @@ C.LAYOUT_MAP          = [1 2; 3 4];   %R01 hooks (4 remaining - 2 pairs, others 
 % =========================================================================
 % STIMULATION PARAMETERS 
 % =========================================================================
-C.MAX_AMP             = 500;            % maximum amplitude stimulation on cathode in uA
+C.MAX_AMP             = 1200;            % maximum amplitude stimulation on cathode in uA
 C.MAX_AMP_REPS        = 50;             % number of pulses applied in a high amplitude survey trial       
 C.THRESH_REPS         = 320;            % number of pulses applied in full data collection trials
 C.STIM_FREQUENCY      = [20 100];       % first (low) freq used for high amp survey to capture 
@@ -95,8 +98,8 @@ C.STIM_MAP = remap_stim(C.LAYOUT_MAP, C.STIM_MAP);
 % =========================================================================
 % ANALYSIS PARAMETERS 
 % =========================================================================
-C.AMP_MIN_DIFF = 2; % uA; this determines step size in binary search 
-C.AMP_MAX_DIFF = 10; 
+C.AMP_MIN_DIFF = 10; % uA; this determines step size in binary search 
+C.AMP_MAX_DIFF = 100; 
 C.PRE_WINDOW = 1; % ms; sets the amount of time prior to stimulation in window
 % C.SLIDING_WINDOW_DURATION  = 250e-6;
 % C.SLIDING_WINDOW_STEP      = 25e-6;

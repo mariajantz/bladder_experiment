@@ -24,19 +24,33 @@ function catheter_data = parse_serial(str)
     if length(splitStr) < 8
         return; % don't fill in anything if the string was the wrong format, i.e. could be an error/status message.
     end
-    
+  
     
     catheter_data.TimeStamp.HH = str2double(splitStr{1}(1:2));
     catheter_data.TimeStamp.MM = str2double(splitStr{1}(3:4));
     catheter_data.TimeStamp.SS = str2double(splitStr{1}(5:6));
     catheter_data.TimeStamp.ms = str2double(splitStr{1}(7:9));
     catheter_data.TimeStamp.datetime = TimeStamp2datetime(splitStr{1});
-    
     catheter_data.Conductivity = str2double(splitStr{2}) / 19480; % value in volts
     catheter_data.Conductance = str2double(splitStr{3}) / 19480; % value in volts
-    catheter_data.Pressure1 = (str2double(splitStr{4})/ 16.98) - 935.87; % value in cmH20
-    catheter_data.Battery = (1.5 * 1023) / str2double(splitStr{5});% battery value in volts
-    catheter_data.Pressure2 = (str2double(splitStr{6}) / 16.98) - 935.87; % value in cmH20
+    catheter_data.Pressure1 = 0.735559*((str2double(splitStr{4})/ 16.98) - 935.87); % value in mmHg  
+    % catheter_data.Battery = (1.5 * 1023) / str2double(splitStr{5});% battery value in volts
+
+    % Convert to binary to get rid of device ID number; "take lower 10 bits"
+    bin = dec2bin(str2double(splitStr{5}));
+%     n_leading_zeros = 16 - length(bin);
+%     bin = [repmat('0', 1, n_leading_zeros) bin];
+    if length(bin) >= 10
+        truncated_bin = bin2dec(bin(3:end));
+        catheter_data.Battery = (1.5 * 1023) / truncated_bin;% battery value in volts
+    else
+        msg = 'Error: insufficient length(bin)';
+        disp(msg)
+        catheter_data.Battery = NaN;
+    end
+
+    catheter_data.Pressure2 = 0.735559*((str2double(splitStr{6}) / 16.98) - 935.87); % value in mmHg (8/13 Dill calibration +51.2)
+    % Does Pressure2 ever get used? 
     catheter_data.Third = str2double(splitStr{7}) / 19480; % value in volts
     
 %     catheter_data.Conductivity.converted = catheter_data.Conductivity.raw / 19480; % value in volts

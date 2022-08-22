@@ -1,0 +1,187 @@
+Analog output scaling is 0.1 Volts/unit of measurement.
+[ 9:25:31.966 AM] SynctoLong
+[ 9:25:32.048 AM] SynctoLong
+[ 9:25:32.257 AM] NoLock
+[ 9:25:32.371 AM] SynctoLong
+[ 9:25:32.530 AM] SynctoLong
+[ 9:25:32.555 AM] SynctoLong
+[ 9:25:32.669 AM] SynctoLong
+[ 9:25:32.773 AM] SynctoLong
+[ 9:25:32.876 AM] SynctoLong
+[ 9:25:32.971 AM] SynctoLong
+[ 9:25:33.082 AM] SynctoLong
+[ 9:25:33.271 AM] NoLock
+[ 9:25:33.377 AM] SynctoLong
+[ 9:25:33.498 AM] SynctoLong
+[ 9:25:33.597 AM] SynctoLong
+[ 9:25:33.693 AM] SynctoLong
+[ 9:25:33.788 AM] SynctoLong
+[ 9:25:33.896 AM] SynctoLong
+[ 9:25:33.998 AM] SynctoLong
+[ 9:25:34.093 AM] SynctoLong
+[ 9:25:34.213 AM] SynctoLong
+[ 9:25:34.307 AM] SynctoLong
+[ 9:25:34.403 AM] SynctoLong
+[ 9:25:34.610 AM] NoLock
+[ 9:25:34.723 AM] SynctoLong
+[ 9:25:34.816 AM] SynctoLong
+[ 9:25:34.907 AM] SynctoLong
+[ 9:25:35.031 AM] SynctoLong
+[ 9:25:35.116 AM] SynctoLong
+[ 9:25:35.235 AM] SynctoLong
+[ 9:25:35.330 AM] SynctoLong
+[ 9:25:35.424 AM] SynctoLong
+[ 9:25:35.534 AM] SynctoLong
+[ 9:25:35.631 AM] SynctoLong
+[ 9:25:35.737 AM] SynctoLong
+[ 9:25:35.848 AM] SynctoLong
+[ 9:25:35.936 AM] SynctoLong
+[ 9:25:36.028 AM] SynctoLong
+[ 9:25:36.222 AM] NoLock
+[ 9:25:36.424 AM] NoLock
+[ 9:25:36.564 AM] SynctoLong
+[ 9:25:36.657 AM] SynctoLong
+[ 9:25:36.774 AM] SynctoLong
+[ 9:25:36.867 AM] SynctoLong
+[ 9:25:36.983 AM] SynctoLong
+[ 9:25:37.076 AM] SynctoLong
+[ 9:25:37.169 AM] SynctoLong
+[ 9:25:37.286 AM] SynctoLong
+[ 9:25:37.370 AM] SynctoLong
+[ 9:25:37.485 AM] SynctoLong
+[ 9:25:37.584 AM] SynctoLong
+[ 9:25:37.677 AM] SynctoLong
+[ 9:25:37.793 AM] SynctoLong
+[ 9:25:37.877 AM] SynctoLong
+[ 9:25:37.995 AM] SynctoLong
+[ 9:25:38.086 AM] SynctoLong
+[ 9:25:38.198 AM] SynctoLong
+[ 9:25:38.298 AM] SynctoLong
+[ 9:25:38.405 AM] SynctoLong
+[ 9:25:38.500 AM] LockShort
+[ 9:25:38.697 AM] NoLock
+[ 9:25:38.893 AM] NoLock
+[ 9:25:39.002 AM] SynctoLong
+[ 9:25:39.126 AM] LockShort
+[ 9:25:39.303 AM] NoLock
+[ 9:25:39.427 AM] SynctoLong
+[ 9:25:39.544 AM] SynctoLong
+[ 9:25:39.628 AM] SynctoLong
+[ 9:25:39.726 AM] SynctoLong
+[ 9:25:39.918 AM] Pressure: -12.49,  Volume: 0.00, Battery: 0.56, Timestamp: 00:01:22.593
+[ 9:25:39.926 AM] Pressure: -12.55,  Volume: 0.00, Battery: 0.56, Timestamp: 00:01:22.723
+[ 9:25:40.072 AM] Pressure: -12.55,  Volume: 0.00, Battery: 0.56, Timestamp: 00:01:22.854
+[ 9:25:40.200 AM] Pressure: -12.67,  Volume: 0.00, Battery: 0.56, Timestamp: 00:01:22.985
+[ 9:25:40.353 AM] Pressure: -12.67,  Volume: 0.00, Battery: 0.56, Timestamp: 00:01:23.115
+[ 9:25:40.447 AM] Pressure: -12.67,  Volume: 0.00, Battery: 0.56, Timestamp: 00:01:23.246
+[ 9:25:40.584 AM] Pressure: -12.61,  Volume: 0.00, Battery: 0.56, Timestamp: 00:01:23.376
+[ 9:25:40.712 AM] Pressure: -12.61,  Volume: 0.00, Battery: 0.56, Timestamp: 00:01:23.507
+[ 9:25:40.855 AM] Pressure: -419.50,  Volume: 0.00, Battery: 0.19, Timestamp: 00:01:23.637
+[ 9:25:40.987 AM] Pressure: -901.95,  Volume: 0.00, Battery: 0.28, Timestamp: 00:01:23.769
+[ 9:25:41.126 AM] Pressure: -436.46,  Volume: 0.00, Battery: 0.57, Timestamp: 00:01:23.899
+[ 9:25:41.233 AM] Pressure: -12.67,  Volume: 0.00, Battery: 0.56, Timestamp: 00:01:24.029
+[ 9:25:41.375 AM] Pressure: -12.61,  Volume: 0.00, Battery: 0.56, Timestamp: 00:01:24.160
+[ 9:25:41.504 AM] Pressure: -12.55,  Volume: 0.00, Battery: 0.56, Timestamp: 00:01:24.291
+[ 9:25:41.635 AM] Pressure: -12.55,  Volume: 0.00, Battery: 0.56, Timestamp: 00:01:24.422
+[ 9:25:41.776 AM] Pressure: -12.55,  Volume: 0.00, Battery: 0.56, Timestamp: 00:01:24.552
+[ 9:25:41.910 AM] Pressure: -12.55,  Volume: 0.00, Battery: 0.56, Timestamp: 00:01:24.683
+[ 9:25:42.046 AM] Pressure: -12.67,  Volume: 0.00, Battery: 0.56, Timestamp: 00:01:24.814
+[ 9:25:42.156 AM] Pressure: -12.67,  Volume: 0.00, Battery: 0.56, Timestamp: 00:01:24.945
+[ 9:25:42.299 AM] Pressure: -12.61,  Volume: 0.00, Battery: 0.56, Timestamp: 00:01:25.075
+[ 9:25:42.431 AM] Pressure: -14.26,  Volume: 0.00, Battery: 0.56, Timestamp: 00:01:25.205
+[ 9:25:42.627 AM] NoLock
+[ 9:25:42.822 AM] NoLock
+[ 9:25:43.003 AM] NoLock
+[ 9:25:43.193 AM] NoLock
+[ 9:25:43.349 AM] LockShort
+[ 9:25:43.483 AM] Pressure: -436.46,  Volume: 0.00, Battery: 0.57, Timestamp: 00:01:26.250
+[ 9:25:43.617 AM] Pressure: -12.55,  Volume: 0.00, Battery: 0.56, Timestamp: 00:01:26.391
+[ 9:25:43.758 AM] Pressure: -12.55,  Volume: 0.00, Battery: 0.56, Timestamp: 00:01:26.523
+[ 9:25:43.886 AM] Pressure: -12.55,  Volume: 0.00, Battery: 0.56, Timestamp: 00:01:26.654
+[ 9:25:44.012 AM] Pressure: -12.55,  Volume: 0.00, Battery: 0.56, Timestamp: 00:01:26.785
+[ 9:25:44.145 AM] Pressure: -12.55,  Volume: 0.00, Battery: 0.56, Timestamp: 00:01:26.916
+[ 9:25:44.287 AM] Pressure: -12.67,  Volume: 0.00, Battery: 0.56, Timestamp: 00:01:27.046
+[ 9:25:44.429 AM] Pressure: -12.61,  Volume: 0.00, Battery: 0.56, Timestamp: 00:01:27.177
+[ 9:25:44.557 AM] Pressure: -12.61,  Volume: 0.00, Battery: 0.56, Timestamp: 00:01:27.308
+[ 9:25:44.673 AM] Pressure: -12.61,  Volume: 0.00, Battery: 0.56, Timestamp: 00:01:27.439
+[ 9:25:44.814 AM] Pressure: -12.61,  Volume: 0.00, Battery: 0.56, Timestamp: 00:01:27.570
+[ 9:25:44.948 AM] Pressure: -12.61,  Volume: 0.00, Battery: 0.56, Timestamp: 00:01:27.701
+[ 9:25:45.074 AM] Pressure: -12.55,  Volume: 0.00, Battery: 0.56, Timestamp: 00:01:27.833
+[ 9:25:45.213 AM] Pressure: -12.73,  Volume: 0.00, Battery: 0.56, Timestamp: 00:01:27.963
+[ 9:25:45.334 AM] Pressure: -12.67,  Volume: 0.00, Battery: 0.56, Timestamp: 00:01:28.094
+[ 9:25:45.465 AM] Pressure: -12.61,  Volume: 0.00, Battery: 0.56, Timestamp: 00:01:28.225
+[ 9:25:45.607 AM] Pressure: -12.55,  Volume: 0.00, Battery: 0.56, Timestamp: 00:01:28.356
+[ 9:25:45.735 AM] Pressure: -12.55,  Volume: 0.00, Battery: 0.56, Timestamp: 00:01:28.487
+[ 9:25:45.878 AM] Pressure: -12.55,  Volume: 0.00, Battery: 0.56, Timestamp: 00:01:28.617
+[ 9:25:45.992 AM] Pressure: -12.55,  Volume: 0.00, Battery: 0.56, Timestamp: 00:01:28.748
+[ 9:25:46.125 AM] Pressure: -12.67,  Volume: 0.00, Battery: 0.56, Timestamp: 00:01:28.879
+[ 9:25:46.267 AM] Pressure: -12.61,  Volume: 0.00, Battery: 0.56, Timestamp: 00:01:29.009
+[ 9:25:46.397 AM] Pressure: -12.61,  Volume: 0.00, Battery: 0.56, Timestamp: 00:01:29.140
+[ 9:25:46.530 AM] Pressure: -12.61,  Volume: 0.00, Battery: 0.56, Timestamp: 00:01:29.271
+[ 9:25:46.649 AM] Pressure: -12.55,  Volume: 0.00, Battery: 0.56, Timestamp: 00:01:29.401
+[ 9:25:46.781 AM] Pressure: -12.55,  Volume: 0.00, Battery: 0.56, Timestamp: 00:01:29.532
+[ 9:25:46.918 AM] Pressure: -12.55,  Volume: 0.00, Battery: 0.56, Timestamp: 00:01:29.663
+[ 9:25:47.053 AM] Pressure: -12.61,  Volume: 0.00, Battery: 0.56, Timestamp: 00:01:29.794
+[ 9:25:47.191 AM] Pressure: -12.61,  Volume: 0.00, Battery: 0.56, Timestamp: 00:01:29.925
+[ 9:25:47.375 AM] NoLock
+[ 9:25:47.579 AM] NoLock
+[ 9:25:47.748 AM] NoLock
+[ 9:25:47.943 AM] NoLock
+[ 9:25:48.138 AM] NoLock
+[ 9:25:48.334 AM] NoLock
+[ 9:25:48.428 AM] SynctoLong
+[ 9:25:48.627 AM] NoLock
+[ 9:25:48.748 AM] SynctoLong
+[ 9:25:48.934 AM] NoLock
+[ 9:25:49.128 AM] NoLock
+[ 9:25:49.261 AM] SynctoLong
+[ 9:25:49.357 AM] SynctoLong
+[ 9:25:49.553 AM] NoLock
+[ 9:25:49.673 AM] SynctoLong
+[ 9:25:49.767 AM] SynctoLong
+[ 9:25:49.875 AM] SynctoLong
+[ 9:25:50.057 AM] NoLock
+[ 9:25:50.164 AM] SynctoLong
+[ 9:25:50.283 AM] SynctoLong
+[ 9:25:50.377 AM] SynctoLong
+[ 9:25:50.567 AM] NoLock
+[ 9:25:50.687 AM] SynctoLong
+[ 9:25:50.880 AM] NoLock
+[ 9:25:50.989 AM] SynctoLong
+[ 9:25:51.108 AM] SynctoLong
+[ 9:25:51.204 AM] SynctoLong
+[ 9:25:51.298 AM] SynctoLong
+[ 9:25:51.489 AM] NoLock
+[ 9:25:51.613 AM] SynctoLong
+[ 9:25:51.721 AM] SynctoLong
+[ 9:25:51.898 AM] NoLock
+[ 9:25:52.089 AM] NoLock
+[ 9:25:52.231 AM] SynctoLong
+[ 9:25:52.325 AM] SynctoLong
+[ 9:25:52.439 AM] SynctoLong
+[ 9:25:52.611 AM] NoLock
+[ 9:25:52.730 AM] SynctoLong
+[ 9:25:52.840 AM] SynctoLong
+[ 9:25:53.042 AM] NoLock
+[ 9:25:53.149 AM] SynctoLong
+[ 9:25:53.243 AM] SynctoLong
+[ 9:25:53.367 AM] SynctoLong
+[ 9:25:53.535 AM] NoLock
+[ 9:25:53.740 AM] NoLock
+[ 9:25:53.931 AM] NoLock
+[ 9:25:54.072 AM] SynctoLong
+[ 9:25:54.178 AM] SynctoLong
+[ 9:25:54.270 AM] SynctoLong
+[ 9:25:54.379 AM] SynctoLong
+[ 9:25:54.476 AM] SynctoLong
+[ 9:25:54.586 AM] SynctoLong
+[ 9:25:54.761 AM] NoLock
+[ 9:25:54.875 AM] SynctoLong
+[ 9:25:54.998 AM] SynctoLong
+[ 9:25:55.191 AM] NoLock
+[ 9:25:55.304 AM] SynctoLong
+[ 9:25:55.502 AM] NoLock
+[ 9:25:55.605 AM] SynctoLong
+[ 9:25:55.698 AM] SynctoLong
+[ 9:25:55.815 AM] SynctoLong
+[ 9:25:55.906 AM] SynctoLong

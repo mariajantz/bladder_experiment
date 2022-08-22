@@ -14,10 +14,22 @@ fprintf('Quiet recording for %0.1f seconds\n', recTime);
 
 % xippmex('trial', 'recording', fpath(1:end-4), 0, 1, [], 148); %use this
 % version for TCP
-xippmex('trial', 'recording', fpath(1:end-4), 0, 1); 
-pause(ceil(recTime)+1); 
+if contains(lower(C.ARRAY_TYPE), 'neuronexus')
+    xippmex('trial', 'recording', fpath(1:end-4), 0, 1); 
+    xippmex('digout', C.DIG_TRIGGER_CHAN, 1)
+    pause(ceil(recTime)+1); 
+else
+    xippmex('trial', 'recording', fpath(1:end-4), 0, 1); 
+    pause(ceil(recTime)+1); 
+end 
 
-xippmex('trial', 'stopped'); 
+if contains(lower(C.ARRAY_TYPE), 'neuronexus')
+    xippmex('digout', C.DIG_TRIGGER_CHAN, 0)
+    pause(0.2); 
+    xippmex('trial', 'stopped'); 
+else
+    xippmex('trial', 'stopped'); 
+end 
 
 % xippmex('digout', C.DIG_TRIGGER_CHAN, 0);
 pause(0.7)
