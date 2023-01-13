@@ -33,10 +33,10 @@ end
 recTime = C.MAX_AMP_REPS/C.STIM_FREQUENCY(1)*size(C.STIM_MAP, 1)+1;
 % set up to trigger recording
 if ~testing
-status = xippmex;
-if status == 0
-    error('Xippmex is not connecting.')
-end
+    status = xippmex;
+    if status == 0
+        error('Xippmex is not connecting.')
+    end
 end
 
 % collect baseline data and do max amp stimulation

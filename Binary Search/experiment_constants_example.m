@@ -22,7 +22,8 @@ stimLocation          = {'A', 'B1', 'B2', 'B3', 'B123', 'D'};
 C.ACTIVE_CHAN         = chanOrder{ismember(stimLocation, C.STIM_HEADSTAGE_LOC)};
 C.HIGHAMP_ACTIVE_CHAN = [chanOrder{ismember(stimLocation, C.HIGHAMP_HEADSTAGE_LOC)}]; %this is empty if the high amp headstage loc variable is empty
 
-C.LAYOUT_MAP          = ([1:8;9:16;17:24]);   %microleads
+%C.LAYOUT_MAP          = ([1:8;9:16;17:24]);   %microleads
+C.LAYOUT_MAP          = [2:2:32; 1:2:31]'; 
 %C.LAYOUT_MAP          = flipud([26:2:32; 25:2:31; 18:2:24; 17:2:23; 10:2:16; 9:2:15; 2:2:8; 1:2:7]); %ripple
 
 % =========================================================================
@@ -64,7 +65,7 @@ end
 %Microleads (24 channel arrays)
 % C.STIM_MAP = num2cell([1:24])';        %MONOPOLAR
 %-------------------------------------------------------------------------------------------------------------
- C.STIM_MAP            = num2cell([[1:7 9:15 17:23]' [[1:7 9:15 17:23] + 1]']); %BIPOLAR HORIZONTAL
+% C.STIM_MAP            = num2cell([[1:7 9:15 17:23]' [[1:7 9:15 17:23] + 1]']); %BIPOLAR HORIZONTAL
 % C.STIM_MAP            = num2cell([[2:6 9:14 17:22]' [[2 4:6 9:14 17:22] + 2]']); % BIPOLAR _WIDE HORIZONTAL
 %-------------------------------------------------------------------------------------------------------------
 % C.STIM_MAP            = num2cell([[1:16]' [[1:16] + 8]']); %BIPOLAR VERTICAL

@@ -24,9 +24,9 @@ stim_on = true; % whether or not to stimulate; true in actual experiment
 load_existing_data = false; % whether or not to use recorded files for processing; false in actual experiment
 
 if load_existing_data
-    single_amp_num = 585; %change this as necessary 
+    single_amp_num = 642; %change this as necessary 
     
-    rootpath = 'R:\data_raw\cat\2019\';
+    rootpath = '\\share.files.pitt.edu\RnelShare\data_raw\cat\2018\';
     %set save folders
     catFolder = dir([rootpath C.CAT_NAME '*']);
     loadpath = fullfile(rootpath, catFolder.name, 'Documents\\Experiment_Files', C.LOCATION);

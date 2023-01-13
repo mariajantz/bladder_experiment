@@ -1007,6 +1007,32 @@ switch subName
         C.TRIPOLAR_CUFF_MAPPING = {...
             [12 13] 'Sciatic Distal' };
         C.LAYOUT_MAP = reshape([2:2:32 1:2:31], 4, 8);
+      
+    case 'Laertes'
+        C.ROOT_PATH = 'R:\data_raw\cat\2019\Iris-20190625';
+        C.EXPT_DATE = '06-25-19';
+        C.REC_HEADSTAGE = 'surfs2';
+        C.ELECTRODE_TYPE = 'Rootlet hooks'; 
+        C.STIM_MAP            = num2cell([1:4; 5:8]');
+        C.SEARCH_CUFFS_IDX = 1:7; 
+        C.BIPOLAR_CUFF_MAPPING = { ...  
+        [0 1] 'Pelv'
+        [2 3] 'Pudendal'
+        [4 5] 'Combined'
+        [6 7] 'Deep Per'
+        [8 9] 'Sensory'
+        [10 11] 'Caudal Rectal'
+        [12 13] 'Sciatic Prox'
+};
+        C.TRIPOLAR_CUFF_MAPPING = {...
+            [12 13] 'Sciatic Distal' };
+        
+    case 'Metion'
+        
+    case 'Nereus'
+        
+    case 'Oceanus'
+        
 end
 
 C.REC_FS              = 30e3;

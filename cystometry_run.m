@@ -6,7 +6,7 @@ stim_on = false;  %stim without using mux
 stim_mux = true;  %stim using mux
 C = experiment_constants_Dill;
 
-stimChan = {[47]}; %cell array of stim channel rows
+stimChan = {[47 51]}; %cell array of stim channel rows
 amp = 210; %amplitudes of stim for each electrode
 freq = [33]; %array of frequencies of stim to test for each electrode
 stimTime = 60; %time in seconds (30-60s for 33Hz, 60-120s for 3Hz)
@@ -48,12 +48,14 @@ if stim_mux
     fprintf("Ripple ch%d <==> E%d \n", [ripple_chan;mux_chan])
     switch_mux(ser, mux_cmd); 
     
-    for i = 1:size(stimChan, 1)
+    %for i = 1:size(stimChan, 1)
         C.THRESH_REPS = stimTime*freq;
         %[cmd(i), ~] = single_amp_cathodal_stim(C, stimChan(i, :), amps(i), freqs(i)); %all cathodal stim
-        [cmd2, ~] = single_elec_stim_cmd(C, ripple_chan(i), amp, freq); %multichannel stim
+        %[cmd2, ~] = single_elec_stim_cmd(C, ripple_chan(i), amp, freq);
+        %%multichannel stim original
+        [cmd2, ~] = single_elec_stim_cmd(C, ripple_chan, amp, freq); %multichannel stim
         cmd = [cmd cmd2];
-    end
+    %end
     
     input('Press Enter to execute stimulation pulse ')
     set_monitor(ser, false);

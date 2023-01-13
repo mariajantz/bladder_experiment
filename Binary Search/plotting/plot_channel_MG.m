@@ -1,17 +1,23 @@
-function [stimChan, plotHandles, anlsStruct] = plot_channel(C, stimVarPath, dataPath)
+function [stimChan, plotHandles, anlsStruct] = plot_channel_MG(stimVarPath)
 % %plot all the traces from the most recent channel
-% C = experiment constants for a trial
 % stimVarPath = where to find the filenumbers, channels, and amplitudes
-% dataPath = where to find the Trellis data
 % example usage: plot_channel(C,
 % 'X:\2018\Bellatrix\Documents\Experiment_Files\Epidural - L6\stimChan_trial2165.mat', 
 % 'X:\2018\Bellatrix\Grapevine'); 
+% '\\share.files.pitt.edu\RnelShare\data_raw\cat\2022\R01_SCS_Fisher-Project\Aqua-20221201'
 % outputs the stimulation channel used, the plot handles generated, and a
 % structure with the analysis generated. 
+% '\\share.files.pitt.edu\RnelShare\data_raw\cat\2022\R01_SCS_Fisher-Project\Aqua-20221201\Documents\Experiment_Files\Epidural
+% - L6\stimChan_trial0640.mat'
 
+dataPath = fullfile(fileparts(stimVarPath), '..\..\..\Grapevine'); 
+constnames = dir(fullfile(fileparts(stimVarPath), 'experiment_cons*')); 
+const_idx = cellfun(@(x) str2double(x(21:24)), {constnames.name}); 
+cfilenum = find(const_idx<str2double(stimVarPath(end-7:end-4)), 1, 'last'); 
 
 %load the stimulation info (filenums, channels, amplitudes) 
 load(stimVarPath); 
+load(fullfile(constnames(cfilenum).folder, constnames(cfilenum).name));
 
 %load baseline
 [~,hFilens5] = ns_OpenFile(fullfile(dataPath, sprintf('datafile%04d.ns5', filenums.baseline)), 'single');
