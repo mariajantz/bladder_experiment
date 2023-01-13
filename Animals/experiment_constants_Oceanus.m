@@ -1,12 +1,13 @@
-function C = experiment_constants_Dill
+function C = experiment_constants_Oceanus
 % =========================================================================
 % ANIMAL AND HEADSTAGE BACKGROUND
 % =========================================================================
-C.CAT_NAME            = 'Dill';   % Animal name
+C.CAT_NAME            = 'Oceanus';   % Animal name
 C.STIMULATOR_TYPE     = 'Grapevine';
-C.SURGERY_DATE        = '2021-06-15'; %YYYY-MM-DD
-C.ARRAY_TYPE          = 'MicroLeads';       % Brand of array, ie 'MicroLeads', 'Ripple', 'Blackrock'
-C.LOCATION            = 'Epidural - MUX';     % Options: 'DRG - S1', 'Epidural - L6', etc
+C.SURGERY_DATE        = '2022-02-01'; %YYYY-MM-DD
+C.ARRAY_TYPE          = 'R01_rootlet_hooks';       % Brand of array, ie 'MicroLeads', 'Ripple', 'Blackrock'
+C.LOCATION            = 'Rootlets_S3';     % Options: 'DRG - S1', 'Epidural - L6', etc
+
 % C.ELECTRODE_DIM       = [4 4];          % 4x4, 4x8, etc - first dimension is electrodes 1, 2, 3...
 C.REC_HEADSTAGE       = 'surfs2_raw';   % surfs2_raw/surfs_raw/surfd_raw/nano2_raw/nano_raw
 C.REC_HEADSTAGE_LOC   = 'A';            % Trellis value of recording headstage, usually 'A'
@@ -15,8 +16,8 @@ C.STIM_HEADSTAGE_LOC  = 'B1';           % Trellis value of stim headstage, optio
 C.HIGHAMP_HEADSTAGE_LOC = '';         % if using two headstages to stimulate, include this - otherwise, leave as empty string ''
 C.REC_FS              = 30e3;           % recording at 30k Hz
 %C.ANALOG_CHAN         = {'Bladder', 'UrineScale'}; 
-C.ANALOG_CHAN         = {'Bladder', 'UrineScale', '0', '0', '0', '0', '0', 'Infusion Pump', 'DAQ'};
-C.TEST_TYPE           = 'Dex'; % 'Behaving', 'Dex', 'Alpha Chloralose', 'Isoflurane'
+C.ANALOG_CHAN         = {'Bladder'};
+C.TEST_TYPE           = 'Isoflurane'; % 'Behaving', 'Dex', 'Alpha Chloralose', 'Isoflurane'
 
 % Switch channels to match location of the stimulation headstage
 chanOrder             = {1:32, 129:160, 161:192, 193:224, 129:224, 385:416}; 
@@ -24,21 +25,16 @@ stimLocation          = {'A', 'B1', 'B2', 'B3', 'B123', 'D'};
 C.ACTIVE_CHAN         = chanOrder{ismember(stimLocation, C.STIM_HEADSTAGE_LOC)};
 C.HIGHAMP_ACTIVE_CHAN = [chanOrder{ismember(stimLocation, C.HIGHAMP_HEADSTAGE_LOC)}]; %this is empty if the high amp headstage loc variable is empty
 
-C.LAYOUT_MAP          = [30 2 6 28 58; ...
-    55 20 3 7 36; ...
-    38 1 5 9 52; ...
-    47 0 4 8 45; ...
-    39 22 25 42 57; ...
-    56 41 23 26 44; ...
-    40 33 34 35 50; ...
-    48 32 24 27 43];   %microleads MUX v2
+C.ROOTLET_IDX         = 0; 
+C.NOTES               = 'whole root, cut';
+C.LAYOUT_MAP          = [1 2; 3 4];   %R01 hooks (4 remaining - 2 pairs, others trimmed off)
 % C.LAYOUT_MAP          = ([1:8;9:16;17:24]);   %microleads
 %C.LAYOUT_MAP          = flipud([26:2:32; 25:2:31; 18:2:24; 17:2:23; 10:2:16; 9:2:15; 2:2:8; 1:2:7]); %ripple
 
 % =========================================================================
 % STIMULATION PARAMETERS 
 % =========================================================================
-C.MAX_AMP             = 400;            % maximum amplitude stimulation on cathode in uA
+C.MAX_AMP             = 1200;            % maximum amplitude stimulation on cathode in uA
 C.MAX_AMP_REPS        = 50;             % number of pulses applied in a high amplitude survey trial       
 C.THRESH_REPS         = 320;            % number of pulses applied in full data collection trials
 C.STIM_FREQUENCY      = [20 100];       % first (low) freq used for high amp survey to capture 
@@ -61,6 +57,7 @@ end
 % this is then remapped onto the channel layout provided above
 
 %====================================STIMULATION TYPES============================================
+ C.STIM_MAP = num2cell([1 2; 3 4]);
 %Ripple (32 channel arrays)
 %C.STIM_MAP = num2cell(1:32)'; % MONOPOLAR 
 %-------------------------------------------------------------------------------------------------
@@ -74,7 +71,7 @@ end
 %Microleads (24 channel arrays)
 % C.STIM_MAP = num2cell([1:24])';        %MONOPOLAR
 %-------------------------------------------------------------------------------------------------------------
- C.STIM_MAP            = num2cell([[1:7 9:15 17:23]' [[1:7 9:15 17:23] + 1]']); %BIPOLAR HORIZONTAL
+% C.STIM_MAP            = num2cell([[1:7 9:15 17:23]' [[1:7 9:15 17:23] + 1]']); %BIPOLAR HORIZONTAL
 % C.STIM_MAP            = num2cell([[2:6 9:14 17:22]' [[2 4:6 9:14 17:22] + 2]']); % BIPOLAR _WIDE HORIZONTAL
 %-------------------------------------------------------------------------------------------------------------
 % C.STIM_MAP            = num2cell([[1:16]' [[1:16] + 8]']); %BIPOLAR VERTICAL
@@ -106,7 +103,7 @@ C.AMP_MAX_DIFF = 100;
 C.PRE_WINDOW = 1; % ms; sets the amount of time prior to stimulation in window
 % C.SLIDING_WINDOW_DURATION  = 250e-6;
 % C.SLIDING_WINDOW_STEP      = 25e-6;
-C.RMS_THRESHOLD_MULTIPLIER = 4; %how high above threshold must something be to register as a response
+C.RMS_THRESHOLD_MULTIPLIER = 3; %how high above threshold must something be to register as a response
 C.MIN_RESPONSE_LATENCY     = 1e-3; %has to be > PWcath+PWanode+IPI (default IPI 66us)
 
 total_pulse_time = ceil((C.STIM_PW_MS*2+.066)*10)/10 * 1e-3; 
@@ -119,19 +116,24 @@ end
 % NERVE CUFF PARAMETERS
 % =========================================================================
 
-C.SEARCH_CUFFS_IDX = 1:5; 
+C.SEARCH_CUFFS_IDX = 1:9; 
 % channel maps for bipolar nerve cuffs: remember to zero-index them. 
 bipolar_cuff_mapping = { ...  
         [0 1] 'Pelv'
-        [4 5] 'Pudendal'
-        [8 9] 'EUS EMG'
-        [12 13] 'Abd EMG'
-        [16 17] 'Glut EMG'
+        [2 3] 'Pudendal'
+        [4 5] 'Sensory'
+        [6 7] 'Deep perineal'
+        [8 9] 'Caudal rectal'
+        [10 11] 'Sciatic'
+        [12 13] 'Rectal EMG'
+        [14 15] 'Glut EMG' 
+        %[16 17] 'TA EMG'
+        [18 19] 'EUS EMG'
 };
 
 tripolar_cuff_mapping    = { ...
 %     [10 11]  'Sciatic Proximal' 
-      [12 13]  'Sciatic Distal' 
+      [20 21]  'placeholder'  %Maria said something about updating this
     };
 
 if strcmp(C.REC_HEADSTAGE, 'surfd_raw')

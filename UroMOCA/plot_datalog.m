@@ -3,7 +3,7 @@ clc; clear;
 
 %==========================================================================
 %EDIT THESE VARIABLES
-Str = fileread('datalog-210713-151715.txt'); % Dill 7/13
+Str = fileread('datalog-210729-131730.txt'); 
 % Str = fileread('datalog-201210-135708.txt');
 %==========================================================================
 
@@ -25,28 +25,27 @@ end
 
 t = datetime(times, 'InputFormat', 'HH:mm:ss.SSS');
 
-% Convert from cmH2O to mmHg
-pressures = pressures * 0.73556;
-% Remove outliers 
-dp = diff(pressures);
-out = (find(dp>400)+1);
-pressures(out) = [];
-t(out) = [];
-bat(out) = [];
-dp = diff(pressures);
-out = (find(abs(dp)>400)+1);
-pressures(out) = [];
-t(out) = [];
-bat(out) = [];
+% % Remove outliers 
+% dp = diff(pressures);
+% out = (find(dp>400)+1);
+% pressures(out) = [];
+% t(out) = [];
+% bat(out) = [];
+% dp = diff(pressures);
+% out = (find(abs(dp)>400)+1);
+% pressures(out) = [];
+% t(out) = [];
+% bat(out) = [];
 
 t2 = seconds(t-t(1));
 figure
 yyaxis left
-plot(t2, pressures, '.') 
+plot(t2, (pressures), '.') 
 title('UroMoca Data')
 xlabel('Time (s)')
 ylabel('Pressure (mmHg)')
-ylim([-100 0])
+% ylim([5 40])
+% xlim([0 300])
 
 yyaxis right
 plot(t2, bat, '.r')

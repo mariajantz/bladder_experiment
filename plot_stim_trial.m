@@ -11,6 +11,7 @@ for lbl = 1:length(tempLabel)
         tempLabel{lbl} = ''; %convert to string for finding ability
     end
 end
+
 stim_in = find(contains(tempLabel, 'stim'));
 numEvts = hFile.Entity(stim_in).Count;
 stimTimes = zeros(1,numEvts);

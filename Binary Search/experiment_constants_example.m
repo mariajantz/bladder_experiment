@@ -4,7 +4,7 @@ function C = experiment_constants_example
 % =========================================================================
 C.CAT_NAME            = 'TestAnimal';   % Animal name
 C.STIMULATOR_TYPE     = 'Grapevine';
-C.ARRAY_TYPE          = 'Ripple';       % Brand of array, ie 'MicroLeads', 'Ripple', 'Blackrock'
+C.ARRAY_TYPE          = 'Neuronexus';       % Brand of array, ie 'MicroLeads', 'Ripple', 'Blackrock', 'Neuronexus'
 C.LOCATION            = 'Epidural - S1';     % Options: 'DRG - S1', 'Epidural - L6', etc
 % C.ELECTRODE_DIM       = [4 4];          % 4x4, 4x8, etc - first dimension is electrodes 1, 2, 3...
 C.REC_HEADSTAGE       = 'surfs2_raw';   % surfs2_raw/surfs_raw/surfd_raw/nano2_raw/nano_raw
